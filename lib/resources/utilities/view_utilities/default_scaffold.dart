@@ -2,6 +2,7 @@ import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/size_fitter.dart';
 import 'package:ame/resources/utilities/view_utilities/constants.dart';
+import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:flutter/material.dart';
 
 class DefaultScaffold extends StatelessWidget {
@@ -49,6 +50,23 @@ class DefaultScaffold extends StatelessWidget {
           fit: BoxFit.cover,
         ), // Image.asset(AppAssets.scaffoldBgWhite)
         Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+            ),
+            centerTitle: true,
+            title: Image.asset(AppAssets.ameLogo,
+                height: 17, width: 66, color: AppColors.ameSplashScreenBgColor),
+          ),
           backgroundColor: Colors.transparent,
           body: body,
         )

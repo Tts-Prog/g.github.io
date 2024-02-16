@@ -8,4 +8,6 @@ class AppAssets {
   //icons
   static const String passwordTextFdIcon = "assets/icons/Lock.png";
   static const String emailTextFdIcon = "assets/icons/Message.png";
+  static const String profileTextFdIcon = "assets/icons/Profile.png";
+  static const String profileText2FdIcon = "assets/icons/Profile2.png";
 }

@@ -4,6 +4,7 @@ import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/view_utilities/default_scaffold.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
+import 'package:ame/views/email_check/email_check.dart';
 import 'package:ame/views/signin/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
@@ -40,12 +41,12 @@ class _OpeningInfoState extends State<OpeningInfo> {
       body: SafeArea(
         child: Stack(
           children: [
-            Positioned(
-                top: 20,
-                left: 50,
-                right: 50,
-                child: ViewUtil.ameLogo(
-                    color: AppColors.ameSplashScreenBgColor, height: 15)),
+            // Positioned(
+            //     top: 20,
+            //     left: 50,
+            //     right: 50,
+            //     child: ViewUtil.ameLogo(
+            //         color: AppColors.ameSplashScreenBgColor, height: 15)),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,7 +82,7 @@ class _OpeningInfoState extends State<OpeningInfo> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SignIn()),
+                                    builder: (context) => const EmailCheck()),
                               );
                             },
                             child: Text("Skip",

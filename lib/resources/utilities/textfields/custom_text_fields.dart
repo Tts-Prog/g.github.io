@@ -94,21 +94,23 @@ class _CustomInputfieldsFieldState extends State<CustomInputFields> {
     }
     return TextFormField(
       decoration: InputDecoration(
-        filled: true,
-        hintText: widget.hintText,
-        hintStyle: TextStyle(color: Colors.grey[400]),
-        prefixText: widget.addPrefixText && widget.iconPresent ? "|     " : "",
-        prefixStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Color(0xffEBE8E8),
-        ),
-        // contentPadding: EdgeInsets.all(10),
-        prefixIcon: widget.iconPresent ? prefixIcon : null,
-        labelText: widget.labelText,
-        //suffixIcon: widget.suffix ??
-        // const CupertinoActivityIndicator()
-        //     .hideIf(!widget.showSuffixBusy)
-      ),
+          filled: true,
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: Colors.grey[400]),
+          prefixText:
+              widget.addPrefixText && widget.iconPresent ? "|     " : "",
+          prefixStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xffEBE8E8),
+          ),
+          // contentPadding: EdgeInsets.all(10),
+          prefixIcon: widget.iconPresent ? prefixIcon : null,
+          labelText: widget.labelText,
+          labelStyle: TextStyle(color: AppColors.typographySubColor)
+          //suffixIcon: widget.suffix ??
+          // const CupertinoActivityIndicator()
+          //     .hideIf(!widget.showSuffixBusy)
+          ),
       style: const TextStyle(
           fontWeight: FontWeight.w400, fontSize: 14, color: Colors.black),
       controller: widget.controller,
