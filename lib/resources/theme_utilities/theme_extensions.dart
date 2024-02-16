@@ -1,3 +1,4 @@
+import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ThemeUtil {
@@ -23,15 +24,16 @@ extension TextStyleExtension on TextStyle {
   TextStyle get headlineSmall => merge(ThemeUtil.textTheme.headlineSmall);
   TextStyle get headlineMedium => merge(ThemeUtil.textTheme.headlineMedium);
   TextStyle get headlineLarge => merge(ThemeUtil.textTheme.headlineLarge);
-  TextStyle get makeBlack => merge(TextStyle(color: Colors.black));
+  TextStyle get makeDefault =>
+      merge(const TextStyle(color: AppColors.typographyTitle));
   //TextStyle get makeOrange => merge(TextStyle(color: AppColors.primary5));
   // TextStyle get makeGrey => merge(TextStyle(color: AppColors.neutral6));
-  TextStyle get makeWhite => merge(TextStyle(color: Colors.white));
+  TextStyle get makeWhite => merge(const TextStyle(color: Colors.white));
   //TextStyle get makeGreen => merge(TextStyle(color: AppColors.secondary5));
   //TextStyle get makeRed => merge(TextStyle(color: AppColors.maroon5));
   //onboarding custom Texts
   TextStyle get onboardingHeadline =>
-      merge(ThemeUtil.textTheme.headlineMedium).merge(TextStyle(
+      merge(ThemeUtil.textTheme.headlineMedium).merge(const TextStyle(
           fontSize: 20,
           fontFamily: 'Inter-Bold',
           fontWeight: FontWeight.w800,

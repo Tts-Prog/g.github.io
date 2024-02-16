@@ -122,6 +122,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "page_view_dot_indicator",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/page_view_dot_indicator-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/path-1.8.3",
       "packageUri": "lib/",
@@ -156,6 +168,12 @@
       "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.6",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/provider-6.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "shared_preferences",
@@ -218,6 +236,18 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "stacked",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/stacked-3.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "stacked_shared",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/stacked_shared-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "stream_channel",
       "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/stream_channel-2.1.2",
       "packageUri": "lib/",
@@ -244,6 +274,12 @@
     {
       "name": "typed_data",
       "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/typed_data-1.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "universal_io",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/universal_io-2.2.2",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -278,7 +314,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-02-13T12:34:02.665158Z",
+  "generated": "2024-02-14T20:18:56.251744Z",
   "generator": "pub",
   "generatorVersion": "3.2.0-119.0.dev"
 }

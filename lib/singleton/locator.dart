@@ -1,14 +1,14 @@
 import 'package:ame/api/api_client.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/log_interceptor.dart';
 
 GetIt locator = GetIt.I;
 
 void setLocatorUp() async {
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
   // UserPreference preference = UserPreference(preferences: sharedPreferences);
 

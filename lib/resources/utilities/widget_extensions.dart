@@ -120,8 +120,6 @@ extension StringExtension on String {
     return elements.join();
   }
 
-
-
   String truncateWithEllipses(int maxLength) {
     if (length <= maxLength) {
       return this;
@@ -157,7 +155,6 @@ extension StringExtension on String {
   }
 }
 
-
 extension DecorativeTextStyle on TextStyle {
   TextStyle underlineWithSpace(
       {required Color textColor,
@@ -166,7 +163,7 @@ extension DecorativeTextStyle on TextStyle {
         shadows: [
           Shadow(
             color: textColor,
-            offset: Offset(0, -3),
+            offset: const Offset(0, -3),
           ),
         ],
         decorationThickness: 1,
@@ -183,7 +180,7 @@ extension DecorativeTextStyle on TextStyle {
         shadows: [
           Shadow(
             color: textColor,
-            offset: Offset(0, -2),
+            offset: const Offset(0, -2),
           ),
         ],
         decorationThickness: 1,

@@ -1,4 +1,4 @@
-import 'package:ame/utilities/view_utilities/constants.dart';
+import 'package:ame/resources/utilities/view_utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SizeUtil {

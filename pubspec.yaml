@@ -32,12 +32,14 @@ dependencies:
     sdk: flutter
   dio:
   get_it: ^7.2.0
+  stacked: ^3.0.1
   shared_preferences: ^2.0.13
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  page_view_dot_indicator: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -81,12 +83,13 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Alatsi
-      fonts:
-        - asset: assets/fonts/Alatsi-Regular.ttf
     - family: Lato
       fonts:
         - asset: assets/fonts/Lato-Regular.ttf
+    - family: Alatsi
+      fonts:
+        - asset: assets/fonts/Alatsi-Regular.ttf
+    
 
   #         style: italic
   #   - family: Trajan Pro
