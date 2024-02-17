@@ -1,4 +1,5 @@
 import 'package:ame/resources/utilities/widget_extensions.dart';
+import 'package:ame/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:ame/resources/theme_utilities/app_colors.dart';
@@ -70,7 +71,14 @@ class _SignUpState extends State<SignUp> {
                       hintText: "Your Password",
                     ).spaceTo(bottom: 20.h),
                     ElevatedButton(
-                            onPressed: () {}, child: const Text("SIGN UP"))
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Home()),
+                              );
+                            },
+                            child: const Text("SIGN UP"))
                         .spaceTo(bottom: 30.h),
                     const Text(
                       "OR",

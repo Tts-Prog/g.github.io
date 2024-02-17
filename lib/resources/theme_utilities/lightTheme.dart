@@ -43,6 +43,10 @@ ThemeData lightTheme() {
             fontSize: 18,
             fontWeight: FontWeight.w500,
             color: AppColors.typographyTitle),
+        titleSmall: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: AppColors.typographyTitle),
         titleMedium: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w500,
