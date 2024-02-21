@@ -1,7 +1,7 @@
 import 'package:ame/singleton/locator.dart';
 import 'package:ame/resources/theme_utilities/lightTheme.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
-import 'package:ame/resources/utilities/size_fitter.dart';
+import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/view_utilities/default_scaffold.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';

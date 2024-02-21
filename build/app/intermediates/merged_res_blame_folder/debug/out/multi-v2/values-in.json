@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.ame.app-mergeDebugResources-5:/values-in/values-in.xml",
+            "outputFile": "com.example.ame.app-mergeDebugResources-9:/values-in/values-in.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Ebenezer\\.gradle\\caches\\transforms-3\\4ca28c4a71705f8a687c69dda140a277\\transformed\\core-1.6.0\\res\\values-in\\values-in.xml",
+                    "source": "/Users/ebenezerkolade/.gradle/caches/transforms-3/4ca28c4a71705f8a687c69dda140a277/transformed/core-1.6.0/res/values-in/values-in.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

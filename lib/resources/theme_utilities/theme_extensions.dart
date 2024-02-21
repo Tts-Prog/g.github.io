@@ -27,7 +27,8 @@ extension TextStyleExtension on TextStyle {
   TextStyle get makeDefault =>
       merge(const TextStyle(color: AppColors.typographyTitle));
   //TextStyle get makeOrange => merge(TextStyle(color: AppColors.primary5));
-  // TextStyle get makeGrey => merge(TextStyle(color: AppColors.neutral6));
+  TextStyle get makeGrey =>
+      merge(const TextStyle(color: AppColors.typographySubColor));
   TextStyle get makeWhite => merge(const TextStyle(color: Colors.white));
   //TextStyle get makeGreen => merge(TextStyle(color: AppColors.secondary5));
   //TextStyle get makeRed => merge(TextStyle(color: AppColors.maroon5));

@@ -1,6 +1,5 @@
 import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -32,37 +31,39 @@ class CustomInputFields extends StatefulWidget {
   final bool animate;
   final TextInputAction? textInputAction;
   final bool addPrefixText;
+  final bool disableAllBorders;
 
-  const CustomInputFields({
-    Key? key,
-    this.iconColor = AppColors.ameSplashScreenBgColor,
-    this.controller,
-    this.labelText = "Enter value",
-    required this.keyboardType,
-    this.inputLimit,
-    this.formatter,
-    this.autocorrect = false,
-    this.validate,
-    this.onSave,
-    this.onchange,
-    this.onTap,
-    this.onEditingComplete,
-    this.node,
-    this.showSuffixBusy = false,
-    this.readOnly = false,
-    this.maxLines,
-    this.iconPresent = false,
-    this.animate = false,
-    this.icon = AppAssets.emailTextFdIcon,
-    this.hintText = "",
-    this.autovalidateMode = AutovalidateMode.disabled,
-    this.maxText,
-    this.suffix,
-    this.prefix,
-    this.onFieldSubmitted,
-    this.textInputAction,
-    this.addPrefixText = true,
-  }) : super(key: key);
+  const CustomInputFields(
+      {Key? key,
+      this.iconColor = AppColors.ameSplashScreenBgColor,
+      this.controller,
+      this.labelText = "Enter value",
+      required this.keyboardType,
+      this.inputLimit,
+      this.formatter,
+      this.autocorrect = false,
+      this.validate,
+      this.onSave,
+      this.onchange,
+      this.onTap,
+      this.onEditingComplete,
+      this.node,
+      this.showSuffixBusy = false,
+      this.readOnly = false,
+      this.maxLines,
+      this.iconPresent = false,
+      this.animate = false,
+      this.icon = AppAssets.emailTextFdIcon,
+      this.hintText = "",
+      this.autovalidateMode = AutovalidateMode.disabled,
+      this.maxText,
+      this.suffix,
+      this.prefix,
+      this.onFieldSubmitted,
+      this.textInputAction,
+      this.addPrefixText = true,
+      this.disableAllBorders = false})
+      : super(key: key);
 
   @override
   State<CustomInputFields> createState() => _CustomInputfieldsFieldState();
@@ -73,7 +74,7 @@ class _CustomInputfieldsFieldState extends State<CustomInputFields> {
   Widget build(BuildContext context) {
     return widget.animate
         ? AnimatedContainer(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             child: formField)
         : formField;
@@ -94,23 +95,21 @@ class _CustomInputfieldsFieldState extends State<CustomInputFields> {
     }
     return TextFormField(
       decoration: InputDecoration(
-          filled: true,
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: Colors.grey[400]),
-          prefixText:
-              widget.addPrefixText && widget.iconPresent ? "|     " : "",
-          prefixStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color(0xffEBE8E8),
-          ),
-          // contentPadding: EdgeInsets.all(10),
-          prefixIcon: widget.iconPresent ? prefixIcon : null,
-          labelText: widget.labelText,
-          labelStyle: TextStyle(color: AppColors.typographySubColor)
-          //suffixIcon: widget.suffix ??
-          // const CupertinoActivityIndicator()
-          //     .hideIf(!widget.showSuffixBusy)
-          ),
+        filled: true,
+        hintText: widget.hintText,
+        hintStyle: TextStyle(color: Colors.grey[400]),
+        prefixText: widget.addPrefixText && widget.iconPresent ? "|     " : "",
+        prefixStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Color(0xffEBE8E8),
+        ),
+        // contentPadding: EdgeInsets.all(10),
+        prefixIcon: widget.iconPresent ? prefixIcon : null,
+        labelText: widget.labelText,
+        //suffixIcon: widget.suffix ??
+        // const CupertinoActivityIndicator()
+        //     .hideIf(!widget.showSuffixBusy)
+      ),
       style: const TextStyle(
           fontWeight: FontWeight.w400, fontSize: 14, color: Colors.black),
       controller: widget.controller,
