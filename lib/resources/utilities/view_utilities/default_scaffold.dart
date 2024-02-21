@@ -1,8 +1,7 @@
 import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
-import 'package:ame/resources/utilities/size_fitter.dart';
+import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/utilities/view_utilities/constants.dart';
-import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:flutter/material.dart';
 
 class DefaultScaffold extends StatelessWidget {
@@ -11,6 +10,7 @@ class DefaultScaffold extends StatelessWidget {
       isTopFramePresent,
       showAppBar;
   final Widget body;
+  final Widget topHeadFrame;
 
   final bool busy;
   final Color appBarLogoColor;
@@ -22,6 +22,7 @@ class DefaultScaffold extends StatelessWidget {
       this.isTopFramePresent = false,
       required this.body,
       this.busy = false,
+      this.topHeadFrame = const SizedBox(),
       this.showAppBar = true,
       this.appBarLogoColor = AppColors.ameSplashScreenBgColor});
 
@@ -30,7 +31,7 @@ class DefaultScaffold extends StatelessWidget {
     return Stack(
       children: [
         pseudoBottomSheet(),
-        topFrame(),
+        isTopFramePresent ? topHeadFrame : const SizedBox(),
 
         Image.asset(
           AppAssets.scaffoldBgWhite,
@@ -82,27 +83,6 @@ class DefaultScaffold extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(45),
                       topRight: Radius.circular(45))),
-            )
-          : const SizedBox(),
-    );
-  }
-
-  Widget topFrame() {
-    return Container(
-      alignment: Alignment.topCenter,
-      height: designHeight.h,
-      width: designWidth.w,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-      ),
-      child: isTopFramePresent
-          ? Container(
-              height: 179.h.addSafeAreaHeight,
-              decoration: const BoxDecoration(
-                  color: AppColors.ameSplashScreenBgColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10))),
             )
           : const SizedBox(),
     );

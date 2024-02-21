@@ -31,37 +31,39 @@ class CustomInputFields extends StatefulWidget {
   final bool animate;
   final TextInputAction? textInputAction;
   final bool addPrefixText;
+  final bool disableAllBorders;
 
-  const CustomInputFields({
-    Key? key,
-    this.iconColor = AppColors.ameSplashScreenBgColor,
-    this.controller,
-    this.labelText = "Enter value",
-    required this.keyboardType,
-    this.inputLimit,
-    this.formatter,
-    this.autocorrect = false,
-    this.validate,
-    this.onSave,
-    this.onchange,
-    this.onTap,
-    this.onEditingComplete,
-    this.node,
-    this.showSuffixBusy = false,
-    this.readOnly = false,
-    this.maxLines,
-    this.iconPresent = false,
-    this.animate = false,
-    this.icon = AppAssets.emailTextFdIcon,
-    this.hintText = "",
-    this.autovalidateMode = AutovalidateMode.disabled,
-    this.maxText,
-    this.suffix,
-    this.prefix,
-    this.onFieldSubmitted,
-    this.textInputAction,
-    this.addPrefixText = true,
-  }) : super(key: key);
+  const CustomInputFields(
+      {Key? key,
+      this.iconColor = AppColors.ameSplashScreenBgColor,
+      this.controller,
+      this.labelText = "Enter value",
+      required this.keyboardType,
+      this.inputLimit,
+      this.formatter,
+      this.autocorrect = false,
+      this.validate,
+      this.onSave,
+      this.onchange,
+      this.onTap,
+      this.onEditingComplete,
+      this.node,
+      this.showSuffixBusy = false,
+      this.readOnly = false,
+      this.maxLines,
+      this.iconPresent = false,
+      this.animate = false,
+      this.icon = AppAssets.emailTextFdIcon,
+      this.hintText = "",
+      this.autovalidateMode = AutovalidateMode.disabled,
+      this.maxText,
+      this.suffix,
+      this.prefix,
+      this.onFieldSubmitted,
+      this.textInputAction,
+      this.addPrefixText = true,
+      this.disableAllBorders = false})
+      : super(key: key);
 
   @override
   State<CustomInputFields> createState() => _CustomInputfieldsFieldState();
@@ -72,7 +74,7 @@ class _CustomInputfieldsFieldState extends State<CustomInputFields> {
   Widget build(BuildContext context) {
     return widget.animate
         ? AnimatedContainer(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             child: formField)
         : formField;

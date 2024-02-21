@@ -1,5 +1,5 @@
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
-import 'package:ame/resources/utilities/size_fitter.dart';
+import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:ame/views/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';

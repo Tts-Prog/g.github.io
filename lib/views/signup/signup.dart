@@ -1,11 +1,10 @@
 import 'package:ame/resources/utilities/widget_extensions.dart';
-import 'package:ame/views/home/home.dart';
+import 'package:ame/views/tab_bar_page/home.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:ame/resources/theme_utilities/app_colors.dart';
-import 'package:ame/resources/theme_utilities/lightTheme.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
-import 'package:ame/resources/utilities/size_fitter.dart';
+import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/textfields/custom_text_fields.dart';
 import 'package:ame/resources/utilities/textfields/password_form_field.dart';

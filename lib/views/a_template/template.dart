@@ -26,7 +26,7 @@ class _TemplateState extends State<Template> {
       },
       builder: (context, _, __) => DefaultScaffold(
           busy: model.busy,
-          body: Column(
+          body: const Column(
             children: [],
           ).spaceSymmetrically(horizontal: 16, vertical: 24)),
     );

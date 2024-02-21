@@ -34,6 +34,8 @@ ThemeData lightTheme() {
     )),
     fontFamily: AppFonts.lato,
     textTheme: const TextTheme(
+        displaySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+        displayMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         bodySmall: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
         bodyMedium: TextStyle(
             fontSize: 15,
@@ -52,7 +54,11 @@ ThemeData lightTheme() {
             fontWeight: FontWeight.w500,
             color: AppColors.typographyTitle
             // fontFamily: AppFonts.alatsi
-            )),
+            ),
+        headlineMedium: TextStyle(
+            fontSize: 35,
+            fontWeight: FontWeight.w900,
+            color: AppColors.typographyTitle)),
     inputDecorationTheme: InputDecorationTheme(
       fillColor: Colors.white,
       // filled: true,
