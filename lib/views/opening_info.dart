@@ -3,6 +3,7 @@ import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/view_utilities/default_scaffold.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:ame/views/email_check/email_check.dart';
+import 'package:ame/views/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
@@ -39,6 +40,7 @@ class _OpeningInfoState extends State<OpeningInfo> {
       },
       child: DefaultScaffold(
         isInfoBottomSheetPresent: true,
+        showAppBarBackButton: false,
         body: SafeArea(
           child: Stack(
             children: [
@@ -106,7 +108,18 @@ class _OpeningInfoState extends State<OpeningInfo> {
                               ),
                             ),
                             GestureDetector(
-                                onTap: _goToNextPage,
+                                onTap: () {
+                                  if (selectedPage != 2) {
+                                    _goToNextPage();
+                                  } else {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EmailCheck()),
+                                    );
+                                  }
+                                },
                                 child: Text(
                                   "Next",
                                   style: const TextStyle().bodyLarge.makeWhite,

@@ -78,11 +78,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         Expanded(
                           child: BorderlessSearchFields(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SearchPage()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => const SearchPage()),
+                              // );
                             },
                             iconPresent: true,
                             hintColor: Colors.white,
@@ -131,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ViewUtil.eventContainer(context),
+                      // ViewUtil.eventContainer(context),
                     ],
                   ),
                 ),
@@ -140,6 +140,24 @@ class _ProfilePageState extends State<ProfilePage> {
           ).spaceSymmetrically(
             horizontal: 16,
           )),
+    );
+  }
+
+  Widget networkCircleImage(
+      {required double radius,
+      String? networkImageStrng,
+      Color? backGroundColor}) {
+    return Container(
+      width: radius,
+      height: radius,
+      decoration: BoxDecoration(
+          image: networkImageStrng != null
+              ? DecorationImage(
+                  image: NetworkImage(networkImageStrng), fit: BoxFit.cover)
+              : null,
+          color: backGroundColor,
+          shape: BoxShape.circle),
+      child: const SizedBox(),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import 'from_json.dart';
@@ -39,8 +41,10 @@ class APIResponse<T> extends GenericObject<T>
   String? message;
   dynamic nMeta;
   dynamic nLinks;
+  dynamic error;
   T? data;
-
+  T? errorData;
+  String? errorMessage;
   APIResponse({required Create<FromJson> create}) : super(create: create);
 
   @override
@@ -58,9 +62,19 @@ class APIResponse<T> extends GenericObject<T>
       if (json['data'] != null) {
         data = genericObject(json['data']);
       }
+      if (json['errors'] != null) {
+        List<dynamic> errorList = (json["errors"]) as List<dynamic>;
+
+        // error = json["errors"];
+        // errorData = genericObject(errorList.first);
+        error = jsonEncode(errorList[0]);
+        final errorMap = jsonDecode(error) as Map;
+        errorMessage = errorMap["message"];
+      }
     } catch (e, stackTrace) {
       debugPrint(e.toString());
       debugPrint(stackTrace.toString());
+
       // status = "999";
       // message = "An error occurred";
       debugPrint("mobile app parsing_error");

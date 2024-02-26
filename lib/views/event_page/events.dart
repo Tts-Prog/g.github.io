@@ -9,11 +9,14 @@ import 'package:ame/views/artist_page/artist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../resources/models/all_events_response.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import 'events_view_model.dart';
 
 class EventsPage extends StatefulWidget {
-  const EventsPage({Key? key}) : super(key: key);
+  EventsPage({Key? key, required this.eventInstance}) : super(key: key);
+  EventInstance eventInstance;
+
   static String routeName = "/insurance";
 
   @override
@@ -74,7 +77,7 @@ class _EventsPageState extends State<EventsPage> {
                                 style: const TextStyle().titleMedium.makeWhite,
                               ),
                               Text(
-                                "Event Category",
+                                widget.eventInstance.category!.name!,
                                 style: const TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 12)
@@ -102,29 +105,42 @@ class _EventsPageState extends State<EventsPage> {
                         style: const TextStyle().headlineMedium,
                       ).spaceTo(bottom: 30, top: 20),
                       eventInfoTile(
-                          "title", "subtitle", AppAssets.calendarIcon),
-                      eventInfoTile("Plato, pracinha",
+                          "${widget.eventInstance.startTime?.day.toString()} ${widget.eventInstance.startTime!.toMonthString()}, ${widget.eventInstance.startTime?.year.toString()}" ??
+                              "",
+                          "${widget.eventInstance.startTime?.getDayOfWeek()}, ${widget.eventInstance.startTime?.toFormattedTime()}" ??
+                              "",
+                          AppAssets.calendarIcon),
+                      eventInfoTile(widget.eventInstance.location ?? "",
                           "36, Guild street London UK", AppAssets.locationIcon),
                       Text(
                         "Artistes",
                         style: const TextStyle().titleSmall,
                       ).spaceTo(bottom: 10),
-                      Row(
-                        children: [
-                          artistTags().spaceTo(right: 20),
-                          artistTags().spaceTo(right: 20),
-                          artistTags().spaceTo(right: 20),
-                          artistTags(),
-                        ],
-                      ).spaceTo(bottom: 30),
+                      // Row(
+                      //   children: [
+                      //     artistTags().spaceTo(right: 20),
+                      //     artistTags().spaceTo(right: 20),
+                      //     artistTags().spaceTo(right: 20),
+                      //     artistTags(),
+                      //   ],
+                      // ).spaceTo(bottom: 30),
+                      SizedBox(
+                        height: 100,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            ...List.generate(
+                                widget.eventInstance.artists!.length,
+                                (index) => artistTags(widget
+                                    .eventInstance.artists![index].artist))
+                          ],
+                        ),
+                      ),
                       Text(
                         "About Events",
                         style: const TextStyle().titleSmall,
                       ).spaceTo(bottom: 30),
-                      const Text(
-                          """Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase. 
-                             \nEnjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase.
-                         \n Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase. Read More...""")
+                      Text(widget.eventInstance.description ?? "")
                     ],
                   ),
                 ),
@@ -134,27 +150,28 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
-  Widget artistTags() {
+  Widget artistTags(Artist? artist) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ArtistPage()),
+          MaterialPageRoute(
+              builder: (context) => ArtistPage(
+                    artist: artist!,
+                  )),
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.red,
-          ),
+          ViewUtil.networkCircleImage(
+              radius: 30, networkImageStrng: artist?.image),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'Powered by ',
+                  text: artist?.name ?? "",
                   style: const TextStyle(
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
@@ -162,7 +179,7 @@ class _EventsPageState extends State<EventsPage> {
                       .makeDefault,
                 ),
                 TextSpan(
-                  text: '\nBonako',
+                  text: '\nArtist',
                   style: const TextStyle(
                     fontFamily: AppFonts.lato,
                     fontSize: 9,
@@ -204,7 +221,7 @@ class _EventsPageState extends State<EventsPage> {
           child: SizedBox(
             child: Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 80,
                   child: Stack(
                     children: [
@@ -213,22 +230,42 @@ class _EventsPageState extends State<EventsPage> {
                           child: CircleAvatar(
                             radius: 17.9,
                             backgroundColor: Colors.red,
+                            child: widget.eventInstance.users?[0].image != null
+                                ? Image.network(
+                                    widget.eventInstance.users![0].image!)
+                                : const SizedBox(),
                           )),
                       Positioned(
                           left: 22,
-                          child: CircleAvatar(
-                            radius: 17.9,
-                            backgroundColor: Colors.black,
-                          )),
-                      CircleAvatar(
-                        radius: 17.9,
-                        backgroundColor: Colors.amber,
-                      )
+                          child: widget.eventInstance.users!.length > 1
+                              ? CircleAvatar(
+                                  radius: 17.9,
+                                  backgroundColor: Colors.black,
+                                  child: widget.eventInstance.users?[1].image !=
+                                          null
+                                      ? Image.network(
+                                          widget.eventInstance.users![1].image!)
+                                      : const SizedBox(),
+                                )
+                              : SizedBox()),
+                      widget.eventInstance.users!.length > 2
+                          ? CircleAvatar(
+                              radius: 17.9,
+                              backgroundColor: Colors.amber,
+                              child:
+                                  widget.eventInstance.users?[2].image != null
+                                      ? Image.network(
+                                          widget.eventInstance.users![2].image!)
+                                      : const SizedBox(),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ).spaceTo(left: 30),
                 Text(
-                  "+20 Going",
+                  widget.eventInstance.users!.length > 3
+                      ? "+${widget.eventInstance.users!.length - 3} Going"
+                      : "",
                   style: const TextStyle().bodyMedium.makeWhite,
                 ).spaceTo(right: 30.w),
                 Expanded(
@@ -249,7 +286,8 @@ class _EventsPageState extends State<EventsPage> {
 
           // gradient: const LinearGradient(
           //     colors: [Color(0x33000000), Color(0xCC29E6DC)])
-          backgroundColor: const Color(0xCC29E6DC),
+          backgroundColor: Color(int.parse(
+              widget.eventInstance.category!.color!.replaceAll("#", "0x66"))),
         ),
       ],
     );

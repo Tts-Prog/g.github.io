@@ -1,3 +1,4 @@
+import 'package:ame/resources/models/all_events_response.dart';
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
@@ -10,8 +11,9 @@ import '../../resources/utilities/view_utilities/view_util.dart';
 import 'artist_page_view_model.dart';
 
 class ArtistPage extends StatefulWidget {
-  const ArtistPage({Key? key}) : super(key: key);
+  ArtistPage({Key? key, required this.artist}) : super(key: key);
   static String routeName = "/insurance";
+  Artist artist;
 
   @override
   State<ArtistPage> createState() => _ArtistPageState();
@@ -19,6 +21,7 @@ class ArtistPage extends StatefulWidget {
 
 class _ArtistPageState extends State<ArtistPage> {
   late ArtistPageViewModel model;
+  List<String>? texts = ['Text 1', 'Text 2', 'Text 3', 'Text 4'];
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class _ArtistPageState extends State<ArtistPage> {
       viewModelBuilder: () => ArtistPageViewModel(),
       onViewModelReady: (model) {
         this.model = model;
-        model.init(context);
+        model.init(context, widget.artist);
       },
       builder: (context, _, __) => DefaultScaffold(
           busy: model.busy,
@@ -34,12 +37,17 @@ class _ArtistPageState extends State<ArtistPage> {
           showAppBar: false,
           topHeadFrame: ViewUtil.topFrame(
               rawHeight: 299,
-              backGroundWidget: ViewUtil.imageBackgroundContainer(
-                  child: const SizedBox(
-                    width: double.infinity,
-                  ),
-                  height: 218.h.addSafeAreaHeight,
-                  background: AppAssets.artistHold)),
+              backGroundWidget: Container(
+                height: 218.h.addSafeAreaHeight,
+                color: Colors.white,
+                child: ViewUtil.imageBackgroundContainer(
+                    child: const SizedBox(
+                      width: double.infinity,
+                    ),
+                    isNetWorkImage: true,
+                    height: 218.h.addSafeAreaHeight,
+                    background: widget.artist.image!),
+              )),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,13 +61,18 @@ class _ArtistPageState extends State<ArtistPage> {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white.withOpacity(0.3),
-                            child: const Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                            ),
-                          ).spaceTo(right: 16),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white.withOpacity(0.3),
+                              child: const Icon(
+                                Icons.arrow_back_sharp,
+                                color: Colors.white,
+                              ),
+                            ).spaceTo(right: 16),
+                          ),
                         ],
                       ),
                       ViewUtil.imageAsset4Scale(asset: AppAssets.notifIcon)
@@ -75,25 +88,38 @@ class _ArtistPageState extends State<ArtistPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Event Name",
-                        style: const TextStyle().headlineMedium,
-                      ).spaceTo(top: 20),
-                      Text(
-                        "Artistes",
-                        style: const TextStyle().bodyMedium,
-                      ).spaceTo(bottom: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.artist.name!,
+                                style: const TextStyle().headlineMedium,
+                              ).spaceTo(top: 20),
+                              Text(
+                                widget.artist.nationality!,
+                                style: const TextStyle().bodyMedium,
+                              ).spaceTo(bottom: 30),
+                            ],
+                          ),
+                          widget.artist.roles.toTextListWidget()
+                        ],
+                      ),
+
                       Text(
                         "Biography",
                         style: const TextStyle().titleSmall,
                       ).spaceTo(bottom: 30),
-                      const Text(
-                          """Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase. 
-                                  
-                                  Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase.
-                                  
-                                  Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase. Read More..."""),
-                      ViewUtil.searchEventContainer()
+                      Text(widget.artist.biography!).spaceTo(bottom: 20),
+                      ...List.generate(
+                          model.artistEventList.length,
+                          (index) => ViewUtil.searchEventContainer(
+                                  model.artistEventList[index], context)
+                              .spaceTo(bottom: 8)),
+
+                      //   ViewUtil.searchEventContainer()
                     ],
                   ),
                 ),

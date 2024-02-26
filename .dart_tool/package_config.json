@@ -98,6 +98,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/intl-0.19.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "lints",
       "rootUri": "file:///Users/ebenezerkolade/.pub-cache/hosted/pub.dev/lints-2.0.1",
       "packageUri": "lib/",
@@ -314,7 +320,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-02-16T23:20:38.899624Z",
+  "generated": "2024-02-24T23:43:37.208271Z",
   "generator": "pub",
   "generatorVersion": "3.2.0-119.0.dev"
 }
