@@ -1,4 +1,6 @@
+import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 extension WidgetExtension on Widget {
   Widget spaceTo(
@@ -11,6 +13,10 @@ extension WidgetExtension on Widget {
 
   Widget spaceAllAroundBy(double value) {
     return Padding(padding: EdgeInsets.all(value), child: this);
+  }
+
+  Widget hideIf(bool when) {
+    return when ? const SizedBox() : this;
   }
 
   Widget spaceSymmetrically({double vertical = 0, double horizontal = 0}) {
@@ -153,6 +159,10 @@ extension StringExtension on String {
 
     return lines.join('\n');
   }
+
+  // String monthStringFromDateTime(DateTime dateTime) {
+  //   return DateFormat('MMMM').format(dateTime);
+  // }
 }
 
 extension DecorativeTextStyle on TextStyle {
@@ -188,5 +198,39 @@ extension DecorativeTextStyle on TextStyle {
         decoration: TextDecoration.underline,
         decorationStyle: underlineType,
         decorationColor: textColor);
+  }
+}
+
+extension DateTimeExtension on DateTime? {
+  String? toMonthString() {
+    if (this == null) return null;
+    return DateFormat('MMMM').format(this!);
+  }
+
+  String getDayOfWeek() {
+    DateFormat dayFormat = DateFormat('EEEE');
+    return dayFormat.format(this!);
+  }
+
+  String? toFormattedTime() {
+    if (this == null) return null;
+    return '${this!.hour.toString().padLeft(2, '0')}:${this!.minute.toString().padLeft(2, '0')}';
+  }
+
+  DateTime? addMinutes(int minutesToAdd) {
+    if (this == null) return null;
+    return this!.add(Duration(minutes: minutesToAdd));
+  }
+}
+
+extension TextListWidget on List<String>? {
+  Widget toTextListWidget() {
+    if (this == null || this!.isEmpty) {
+      return const Text('No texts provided');
+    }
+    return Text(
+      this!.join('\n'),
+      style: TextStyle(color: AppColors.typographyTitle),
+    );
   }
 }

@@ -38,6 +38,7 @@ class _EmailCheckState extends State<EmailCheck> {
         },
         child: DefaultScaffold(
             busy: model.busy,
+            showAppBarBackButton: false,
             body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,28 +58,15 @@ class _EmailCheckState extends State<EmailCheck> {
                       ),
                       CustomInputFields(
                         iconPresent: true,
+                        controller: model.emailController,
                         keyboardType: TextInputType.emailAddress,
                         prefix: ViewUtil.imageAsset4Scale(
                             asset: AppAssets.emailTextFdIcon),
                         hintText: "abc@email.com",
                       ).spaceTo(bottom: 30.h),
                       ViewUtil.onboardingButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SignIn()),
-                                );
-                              },
-                              buttonText: "CONTINUE2")
-                          .spaceTo(bottom: 30.h),
-                      ViewUtil.onboardingButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SignUp()),
-                                );
+                              onPressed: () async {
+                                model.checkEmail();
                               },
                               buttonText: "CONTINUE")
                           .spaceTo(bottom: 30.h),

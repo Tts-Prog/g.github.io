@@ -2,11 +2,13 @@ import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/utilities/view_utilities/constants.dart';
+import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
 
 class DefaultScaffold extends StatelessWidget {
   final bool isScaffoldGreen,
       isInfoBottomSheetPresent,
+      showAppBarBackButton,
       isTopFramePresent,
       showAppBar;
   final Widget body;
@@ -24,6 +26,7 @@ class DefaultScaffold extends StatelessWidget {
       this.busy = false,
       this.topHeadFrame = const SizedBox(),
       this.showAppBar = true,
+      this.showAppBarBackButton = true,
       this.appBarLogoColor = AppColors.ameSplashScreenBgColor});
 
   @override
@@ -45,15 +48,17 @@ class DefaultScaffold extends StatelessWidget {
                   elevation: 0,
                   surfaceTintColor: Colors.transparent,
                   backgroundColor: Colors.transparent,
-                  leading: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                  ),
+                  leading: showAppBarBackButton
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                          ),
+                        )
+                      : SizedBox(),
                   centerTitle: true,
                   title: Image.asset(AppAssets.ameLogo,
                       height: 17, width: 66, color: appBarLogoColor),
@@ -61,7 +66,8 @@ class DefaultScaffold extends StatelessWidget {
               : null,
           backgroundColor: Colors.transparent,
           body: body,
-        )
+        ),
+        Center(child: const CircularProgressIndicator().hideIf(!busy))
       ],
     );
   }

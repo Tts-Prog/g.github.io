@@ -56,11 +56,7 @@ class _PasswordEmailState extends State<PasswordEmail> {
               ViewUtil.onboardingButton(
                   buttonText: "SEND",
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PasswordReset()),
-                    );
+                    model.checkEmail();
                   })
             ],
           ).spaceSymmetrically(horizontal: 20, vertical: 24)),

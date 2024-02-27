@@ -6,6 +6,7 @@ import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/view_utilities/default_scaffold.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:ame/views/opening_info.dart';
+import 'package:ame/views/test_view/test_view.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,9 +27,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: lightTheme(),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Flutter Demo', theme: lightTheme(),
+      home: const MyHomePage(
+        title: 'Events App',
+      ),
+      //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -77,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      showAppBar: false,
       isScaffoldGreen: true,
       body: Center(
         child: Column(

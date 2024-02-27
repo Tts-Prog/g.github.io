@@ -6,13 +6,16 @@ import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../resources/models/all_events_response.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
+import '../event_page/events.dart';
 import 'search_page_view_model.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  SearchPage({Key? key, required this.eventsList}) : super(key: key);
   static String routeName = "/insurance";
+  List<EventInstance> eventsList;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -20,6 +23,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   late SearchPageViewModel model;
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,11 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   Expanded(
                     child: BorderlessSearchFields(
+                      onchange: (value) {
+                        setState(() {
+                          searchText = value; // Update the search text
+                        });
+                      },
                       iconPresent: true,
                       keyboardType: TextInputType.emailAddress,
                       prefix: ViewUtil.imageAsset4Scale(
@@ -66,9 +75,34 @@ class _SearchPageState extends State<SearchPage> {
                       .spaceTo(left: 20)
                 ],
               ).spaceTo(bottom: 50),
-              ViewUtil.searchEventContainer()
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...List.generate(
+                        widget.eventsList.length,
+                        (index) => buildEventContainer(
+                              widget.eventsList[index],
+                            ).spaceTo(bottom: 8)),
+                  ],
+                ),
+              )),
             ],
           ).spaceSymmetrically(horizontal: 16, vertical: 24)),
     );
+  }
+
+  Widget buildEventContainer(
+    EventInstance eventInstance,
+  ) {
+    if (searchText.isNotEmpty &&
+        eventInstance.title!.toLowerCase().contains(searchText.toLowerCase()) ==
+            false) {
+      // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
+      print(eventInstance.description);
+
+      return const SizedBox.shrink();
+    }
+    return ViewUtil.searchEventContainer(eventInstance, context);
   }
 }

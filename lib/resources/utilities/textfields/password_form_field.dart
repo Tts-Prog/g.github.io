@@ -76,7 +76,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         labelText: widget.labelText,
         labelStyle: const TextStyle(color: AppColors.typographySubColor),
 
-        hintText: widget.hintText,
+        // hintText: widget.hintText,
         prefixText: "|     ",
         prefixStyle: const TextStyle(
           fontWeight: FontWeight.bold,

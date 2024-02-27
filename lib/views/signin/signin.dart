@@ -14,8 +14,9 @@ import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import 'sign_in_view_model.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+  const SignIn({Key? key, required this.email}) : super(key: key);
   static String routeName = "/insurance";
+  final String email;
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -30,7 +31,8 @@ class _SignInState extends State<SignIn> {
       viewModelBuilder: () => SignInViewModel(),
       onViewModelReady: (model) {
         this.model = model;
-        model.init(context);
+        model.init(context, widget.email);
+        model.fillEmail(widget.email);
       },
       builder: (context, _, __) => DefaultScaffold(
           busy: model.busy,
@@ -51,14 +53,17 @@ class _SignInState extends State<SignIn> {
                 ),
                 CustomInputFields(
                   iconPresent: true,
+                  readOnly: true,
+                  controller: model.emailController,
                   keyboardType: TextInputType.emailAddress,
                   prefix: ViewUtil.imageAsset4Scale(
                       asset: AppAssets.emailTextFdIcon),
                   hintText: "abc@email.com",
                 ).spaceTo(bottom: 20.h),
-                const PasswordTextField(
+                PasswordTextField(
                   keyboardType: TextInputType.text,
                   hintText: "Your Password",
+                  controller: model.passwordController,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
@@ -78,8 +83,10 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 ViewUtil.onboardingButton(
-                        buttonText: "SIGN IN", onPressed: () {})
-                    .spaceTo(bottom: 20.h, top: 20.h),
+                    buttonText: "SIGN IN",
+                    onPressed: () async {
+                      model.logIn();
+                    }).spaceTo(bottom: 20.h, top: 20.h),
 
                 const Text(
                   "OR",
