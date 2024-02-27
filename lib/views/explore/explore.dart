@@ -298,6 +298,10 @@ class _ExploreState extends State<Explore> {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance, context);
+    return ViewUtil.eventContainer(eventInstance, context, () async {
+      model.saveAnEvent(
+        eventInstance.id!,
+      );
+    });
   }
 }

@@ -302,7 +302,7 @@ class ViewUtil {
   }
 
   static Widget eventContainer(
-      EventInstance eventInstance, BuildContext context) {
+      EventInstance eventInstance, BuildContext context, VoidCallback onTap) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -373,7 +373,8 @@ class ViewUtil {
                   Row(
                     children: [
                       ViewUtil.shareBlock().spaceTo(right: 20),
-                      ViewUtil.bookmarkBlock()
+                      GestureDetector(
+                          onTap: onTap, child: ViewUtil.bookmarkBlock())
                     ],
                   )
                 ],

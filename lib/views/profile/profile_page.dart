@@ -110,11 +110,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     allCategContainer().spaceTo(right: 4),
                     ...List.generate(
-                        model.categories.length,
+                        model.eventCategories.length,
                         (index) => categoryContainer(
-                                id: model.categories[index].id!,
-                                category: model.categories[index])
-                            .spaceTo(right: 4))
+                                id: model.eventCategories[index].id!,
+                                category: model.eventCategories[index])
+                            .spaceTo(right: 4)).toSet().toList()
                   ],
                 ),
               ).spaceTo(bottom: 20),
@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         (index) => buildEventContainer(
                               model.events[index],
                               selectedId,
-                            ).spaceTo(bottom: 8)),
+                            ).spaceTo(bottom: 8)).toSet().toList(),
                   ],
                 ),
               )),
@@ -222,6 +222,8 @@ class _ProfilePageState extends State<ProfilePage> {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance, context);
+    return ViewUtil.eventContainer(eventInstance, context, () {
+      model.removeSavedEvent(eventInstance);
+    });
   }
 }

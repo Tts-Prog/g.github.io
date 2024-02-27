@@ -1,6 +1,7 @@
 import 'package:ame/resources/api/api_client.dart';
 import 'package:ame/resources/api/api_route.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
+import 'package:ame/services/authentication_service.dart';
 import 'package:ame/singleton/locator.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,7 @@ class SignUpViewModel extends BaseViewModel {
   String name = "";
   String password = "";
   bool isButtonEnabled = false;
+  final _authService = locator<AuthenticationService>();
 
   final contactFormKey = GlobalKey<FormState>();
 
@@ -59,7 +61,9 @@ mutation  {
     // print("The status we got is" + response.response.errorMessage!);
 
     if (response.response.errorMessage == null) {
+      await _authService.getUserProfileInfo(email);
       setBusy(false);
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Home()),

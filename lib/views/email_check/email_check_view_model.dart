@@ -74,9 +74,9 @@ mutation {
 
   getUserInfo() async {
     setBusy(true);
-    await _authService.getUserProfileInfo(email);
-    setBusy(true);
-    userProfileInfo = _authService.userProfileInfo;
+    userProfileInfo = await _authService.getUserProfileInfo(email);
+    // setBusy(true);
+    // userProfileInfo = _authService.userProfileInfo;
     setBusy(false);
   }
 }

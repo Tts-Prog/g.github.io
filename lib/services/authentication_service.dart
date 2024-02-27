@@ -1,19 +1,20 @@
 import 'package:ame/resources/models/all_events_response.dart';
 import 'package:ame/resources/models/get_user_info_response.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../resources/api/api_client.dart';
 import '../resources/api/api_response.dart';
 import '../resources/api/api_route.dart';
+import '../resources/models/saved_event_response.dart';
+import '../resources/utilities/view_utilities/view_util.dart';
 import '../singleton/locator.dart';
 
 class AuthenticationService with ListenableServiceMixin {
   final _apiService = locator<APIClient>();
   AuthenticationService() {
     //3
-    listenToReactiveValues([
-      _allEventsResponse,
-    ]);
+    listenToReactiveValues([_allEventsResponse, _userProfileInfo]);
   }
 
   AllEventsResponse? _allEventsResponse;
