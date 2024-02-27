@@ -1,4 +1,4 @@
-import 'package:ame/api/from_json.dart';
+import 'package:ame/resources/api/from_json.dart';
 
 class AllEventsResponse implements FromJson<AllEventsResponse> {
   List<EventInstance>? eventInstances;
@@ -11,20 +11,20 @@ class AllEventsResponse implements FromJson<AllEventsResponse> {
     if (json['events'] != null) {
       eventInstances = <EventInstance>[];
       json['events'].forEach((v) {
-        eventInstances?.add(EventInstance.fromJson(v));
+        eventInstances?.add(EventInstance().fromJson(v));
       });
     }
     if (json['eventsByDay'] != null) {
       eventInstances = <EventInstance>[];
       json['eventsByDay'].forEach((v) {
-        eventInstances?.add(EventInstance.fromJson(v));
+        eventInstances?.add(EventInstance().fromJson(v));
       });
     }
 
     if (json['categories'] != null) {
       categories = <Category>[];
       json['categories'].forEach((v) {
-        categories?.add(Category.fromJson(v));
+        categories?.add(Category().fromJson(v));
       });
     }
     return this;
@@ -76,7 +76,7 @@ class EventInstance {
       this.updatedAt,
       this.users});
 
-  EventInstance.fromJson(Map<String, dynamic> json) {
+  EventInstance fromJson(Map<String, dynamic> json) {
     if (json['artists'] != null) {
       artists = <Artists>[];
       json['artists'].forEach((v) {
@@ -84,7 +84,7 @@ class EventInstance {
       });
     }
     category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
+        json['category'] != null ? Category().fromJson(json['category']) : null;
     categoryId = json['category_id'];
     createdAt =
         json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null;
@@ -106,6 +106,7 @@ class EventInstance {
         users?.add(Users().fromJson(v));
       });
     }
+    return this;
   }
 
   Map<String, dynamic> toJson() {
@@ -213,7 +214,7 @@ class Category {
 
   Category({this.color, this.createdAt, this.id, this.name, this.updatedAt});
 
-  Category.fromJson(Map<String, dynamic> json) {
+  Category fromJson(Map<String, dynamic> json) {
     color = json['color'];
     createdAt =
         json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null;
@@ -222,6 +223,7 @@ class Category {
     name = json['name'];
     updatedAt =
         json['updatedAt'] != null ? DateTime.tryParse(json['updatedAt']) : null;
+    return this;
   }
 
   Map<String, dynamic> toJson() {

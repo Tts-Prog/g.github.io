@@ -1,4 +1,4 @@
-import 'package:ame/api/from_json.dart';
+import 'package:ame/resources/api/from_json.dart';
 
 class CharactersResponse implements FromJson<CharactersResponse> {
   Characters? characters;

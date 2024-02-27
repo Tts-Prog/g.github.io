@@ -5,6 +5,7 @@ import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../resources/models/all_events_response.dart';
 import '../../resources/utilities/textfields/borderless_fields.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
@@ -21,7 +22,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late ProfilePageViewModel model;
-
+  String selectedId = 'All';
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProfilePageViewModel>.reactive(
@@ -60,82 +61,83 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Event Name",
+                              model.userDetails!.getUser!.name!,
                               style: const TextStyle().titleMedium.makeWhite,
                             ),
-                            Text(
-                              "Event Category",
-                              style: const TextStyle(
-                                      fontWeight: FontWeight.w500, fontSize: 12)
-                                  .makeWhite,
-                            )
+                            // Text(
+                            //   "Event Category",
+                            //   style: const TextStyle(
+                            //           fontWeight: FontWeight.w500, fontSize: 12)
+                            //       .makeWhite,
+                            // )
                           ],
                         ),
                       ],
                     ).spaceTo(top: 20.addSafeAreaHeight),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: BorderlessSearchFields(
-                            onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => const SearchPage()),
-                              // );
-                            },
-                            iconPresent: true,
-                            hintColor: Colors.white,
-                            keyboardType: TextInputType.emailAddress,
-                            prefix: ViewUtil.imageAsset4Scale(
-                                asset: AppAssets.searchIcon,
-                                color: Colors.white),
-                          ),
-                        ),
-                        ViewUtil.customOutlineContainer(
-                                height: 36.h,
-                                width: 90.w,
-                                child: const Text("data"))
-                            .spaceTo(left: 20)
-                      ],
-                    )
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: BorderlessSearchFields(
+                    //         onTap: () {
+                    //           // Navigator.push(
+                    //           //   context,
+                    //           //   MaterialPageRoute(
+                    //           //       builder: context) => const SearchPage()),
+                    //           // );
+                    //         },
+                    //         iconPresent: true,
+                    //         hintColor: Colors.white,
+                    //         keyboardType: TextInputType.emailAddress,
+                    //         prefix: ViewUtil.imageAsset4Scale(
+                    //             asset: AppAssets.searchIcon,
+                    //             color: Colors.white),
+                    //       ),
+                    //     ),
+                    //     ViewUtil.customOutlineContainer(
+                    //             height: 36.h,
+                    //             width: 90.w,
+                    //             child: const Text("data"))
+                    //         .spaceTo(left: 20)
+                    //   ],
+                    // )
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  ViewUtil.eventTags(category: "Some", tagColor: Colors.blue),
-                  Container(
-                    height: 40,
-                    padding: EdgeInsets.zero,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                      child: Text(
-                        "All",
-                        style: const TextStyle().bodyMedium.makeWhite,
-                      ).spaceSymmetrically(horizontal: 16),
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: 52,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    allCategContainer().spaceTo(right: 4),
+                    ...List.generate(
+                        model.categories.length,
+                        (index) => categoryContainer(
+                                id: model.categories[index].id!,
+                                category: model.categories[index])
+                            .spaceTo(right: 4))
+                  ],
+                ),
               ).spaceTo(bottom: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Saves",
+                  "Saved events",
                   style: const TextStyle().titleSmall,
                 ).spaceTo(bottom: 20.h),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // ViewUtil.eventContainer(context),
-                    ],
-                  ),
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...List.generate(
+                        model.events.length,
+                        (index) => buildEventContainer(
+                              model.events[index],
+                              selectedId,
+                            ).spaceTo(bottom: 8)),
+                  ],
                 ),
-              ),
+              )),
             ],
           ).spaceSymmetrically(
             horizontal: 16,
@@ -159,5 +161,67 @@ class _ProfilePageState extends State<ProfilePage> {
           shape: BoxShape.circle),
       child: const SizedBox(),
     );
+  }
+
+  Widget categoryContainer({required String id, required Category category}) {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedId = id; // Update the selected ID
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ViewUtil.eventTags(
+                category: category.name! ?? "All",
+                tagColor:
+                    Color(int.parse(category!.color!.replaceAll("#", "0x66")))),
+            ViewUtil.customOutlineContainer(
+                    backgroundColor: selectedId == id
+                        ? Color(
+                            int.parse(category.color!.replaceAll("#", "0x66")))
+                        : Colors.transparent,
+                    width: 24,
+                    height: 5,
+                    child: const SizedBox())
+                .spaceTo(top: 5)
+          ],
+        ));
+  }
+
+  Widget allCategContainer() {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedId = "All"; // Update the selected ID
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ViewUtil.eventTags(
+                category: "All", tagColor: const Color(0x66E56861)),
+            ViewUtil.customOutlineContainer(
+                    backgroundColor: selectedId == "All"
+                        ? const Color(0x66E56861)
+                        : Colors.transparent,
+                    width: 24,
+                    height: 5,
+                    child: const SizedBox())
+                .spaceTo(top: 5)
+          ],
+        ));
+  }
+
+  Widget buildEventContainer(
+    EventInstance eventInstance,
+    String selectedId,
+  ) {
+    if (selectedId != 'All' && eventInstance.categoryId != selectedId) {
+      // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
+      return const SizedBox.shrink();
+    }
+    return ViewUtil.eventContainer(eventInstance, context);
   }
 }

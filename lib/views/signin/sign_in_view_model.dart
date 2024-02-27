@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../api/api_client.dart';
-import '../../api/api_response.dart';
-import '../../api/api_route.dart';
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/api/api_client.dart';
+import '../../resources/api/api_response.dart';
+import '../../resources/api/api_route.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/models/fetch_characters.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
 import '../../singleton/locator.dart';

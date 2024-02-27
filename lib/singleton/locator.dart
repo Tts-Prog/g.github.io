@@ -1,9 +1,9 @@
-import 'package:ame/api/api_client.dart';
+import 'package:ame/resources/api/api_client.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/log_interceptor.dart';
+import '../resources/api/log_interceptor.dart';
 import '../services/authentication_service.dart';
 
 GetIt locator = GetIt.I;

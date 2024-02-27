@@ -45,7 +45,8 @@ class _EventsPageState extends State<EventsPage> {
                     width: double.infinity,
                   ),
                   height: 218.h.addSafeAreaHeight,
-                  background: AppAssets.eventBackground)),
+                  isNetWorkImage: true,
+                  background: widget.eventInstance.image!)),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -73,7 +74,7 @@ class _EventsPageState extends State<EventsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Event Name",
+                                widget.eventInstance.title!,
                                 style: const TextStyle().titleMedium.makeWhite,
                               ),
                               Text(
@@ -101,7 +102,7 @@ class _EventsPageState extends State<EventsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Event Name",
+                        widget.eventInstance.title!,
                         style: const TextStyle().headlineMedium,
                       ).spaceTo(bottom: 30, top: 20),
                       eventInfoTile(
@@ -132,7 +133,8 @@ class _EventsPageState extends State<EventsPage> {
                             ...List.generate(
                                 widget.eventInstance.artists!.length,
                                 (index) => artistTags(widget
-                                    .eventInstance.artists![index].artist))
+                                        .eventInstance.artists![index].artist)
+                                    .spaceTo(right: 12))
                           ],
                         ),
                       ),

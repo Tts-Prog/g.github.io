@@ -1,16 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:ame/resources/models/get_user_info_response.dart';
 import 'package:ame/resources/models/validate_user_response.dart';
 import 'package:ame/views/signin/signin.dart';
 import 'package:ame/views/signup/signup.dart';
 import 'package:flutter/material.dart';
 
-import '../../api/api_client.dart';
-import '../../api/api_response.dart';
-import '../../api/api_route.dart';
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/api/api_client.dart';
+import '../../resources/api/api_response.dart';
+import '../../resources/api/api_route.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/models/fetch_characters.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
+import '../../services/authentication_service.dart';
 import '../../singleton/locator.dart';
 
 class EmailCheckViewModel extends BaseViewModel {
@@ -19,6 +21,9 @@ class EmailCheckViewModel extends BaseViewModel {
   TextEditingController emailController = TextEditingController();
   String email = "";
   final APIClient _apiService = locator<APIClient>();
+  UserProfileInfo? userProfileInfo;
+
+  final _authService = locator<AuthenticationService>();
 
   init(BuildContext context) {
     this.context = context;
@@ -30,7 +35,7 @@ class EmailCheckViewModel extends BaseViewModel {
 
     String query = """
 mutation {
-  validate(email: "$email")
+  forgotPassword(email: "$email")
 }
 
 
@@ -41,7 +46,7 @@ mutation {
         create: () => APIResponse<ValidateUserResponse>(
             create: () => ValidateUserResponse()));
 
-    if (response.response.data!.validate == false) {
+    if (response.response.data!.forgotPassword == false) {
       setBusy(false);
       Navigator.push(
         context,
@@ -50,7 +55,9 @@ mutation {
                   email: email,
                 )),
       );
-    } else if (response.response.data!.validate == true) {
+    } else if (response.response.data!.forgotPassword == true) {
+      setBusy(true);
+      getUserInfo();
       setBusy(false);
       Navigator.push(
         context,
@@ -63,5 +70,13 @@ mutation {
       ViewUtil.showSnackBar(context, response.response.errorMessage);
       setBusy(false);
     }
+  }
+
+  getUserInfo() async {
+    setBusy(true);
+    await _authService.getUserProfileInfo(email);
+    setBusy(true);
+    userProfileInfo = _authService.userProfileInfo;
+    setBusy(false);
   }
 }

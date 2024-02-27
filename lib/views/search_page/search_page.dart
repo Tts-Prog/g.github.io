@@ -96,9 +96,7 @@ class _SearchPageState extends State<SearchPage> {
     EventInstance eventInstance,
   ) {
     if (searchText.isNotEmpty &&
-        eventInstance.description!
-                .toLowerCase()
-                .contains(searchText.toLowerCase()) ==
+        eventInstance.title!.toLowerCase().contains(searchText.toLowerCase()) ==
             false) {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       print(eventInstance.description);

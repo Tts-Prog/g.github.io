@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 
 class TemplateViewModel extends BaseViewModel {
   String title = "Template Title";

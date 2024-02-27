@@ -49,22 +49,20 @@ class _PasswordResetState extends State<PasswordReset> {
                       style: const TextStyle().bodyMedium,
                     ).spaceTo(bottom: 20.h),
                   ),
-                  const PasswordTextField(
+                  PasswordTextField(
                     keyboardType: TextInputType.text,
                     labelText: "Your Password",
+                    controller: model.passwordController,
                   ).spaceTo(bottom: 20.h),
-                  const PasswordTextField(
+                  PasswordTextField(
                     keyboardType: TextInputType.text,
                     labelText: "Confirm Password",
+                    controller: model.confirmPwordController,
                   ).spaceTo(bottom: 20.h),
                   ViewUtil.onboardingButton(
                       buttonText: "LOG IN",
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PasswordReset()),
-                        );
+                      onPressed: () async {
+                        model.changePassword();
                       })
                 ],
               ).spaceSymmetrically(horizontal: 16, vertical: 24),

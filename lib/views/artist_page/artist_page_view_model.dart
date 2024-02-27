@@ -1,7 +1,7 @@
 import 'package:ame/resources/models/all_events_response.dart';
 import 'package:flutter/material.dart';
 
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 import '../../services/authentication_service.dart';
 import '../../singleton/locator.dart';
 

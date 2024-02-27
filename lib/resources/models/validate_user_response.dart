@@ -1,19 +1,19 @@
-import '../../api/from_json.dart';
+import '../api/from_json.dart';
 
 class ValidateUserResponse implements FromJson<ValidateUserResponse> {
-  bool? validate;
+  bool? forgotPassword;
 
-  ValidateUserResponse({this.validate});
+  ValidateUserResponse({this.forgotPassword});
 
   @override
   ValidateUserResponse fromJson(Map<String, dynamic> json) {
-    validate = json['validate'];
+    forgotPassword = json['forgotPassword'];
     return this;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['validate'] = validate;
+    data['forgotPassword'] = forgotPassword;
     return data;
   }
 }

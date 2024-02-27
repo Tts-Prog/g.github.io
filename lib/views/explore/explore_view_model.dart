@@ -1,11 +1,12 @@
-import 'package:ame/api/api_response.dart';
+import 'package:ame/resources/api/api_response.dart';
 import 'package:ame/resources/models/all_events_response.dart';
+import 'package:ame/resources/models/fetch_characters.dart';
 import 'package:ame/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../api/api_client.dart';
-import '../../api/api_route.dart';
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/api/api_client.dart';
+import '../../resources/api/api_route.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
 import '../../singleton/locator.dart';
 
@@ -79,6 +80,39 @@ class ExploreViewModel extends BaseViewModel {
       allEventsResponse = response.response.data;
       events = allEventsResponse!.eventInstances!;
       categories = allEventsResponse!.categories!;
+      setBusy(false);
+    } else {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Connection error");
+    }
+  }
+
+  saveEvent() async {
+    String query = """mutation  {
+  createSavedEvent(savedEvent: \$savedEvent) {
+    event_id
+    id
+    user_id
+    createdAt
+    updatedAt
+  }
+}""";
+
+    var response = await _apiService.request(
+        route: ApiRoute(ApiType.searchEventsByDate),
+        data: {"query": query},
+        create: () => APIResponse<CharactersResponse>(
+            create: () => CharactersResponse()));
+
+    // if (response.response.errorMessage == null) {
+
+    if (response.response.errorMessage != null) {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, response.response.errorMessage);
+    }
+    if (response.response.data != null) {
+      setBusy(true);
+      //
       setBusy(false);
     } else {
       setBusy(false);

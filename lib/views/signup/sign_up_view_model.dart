@@ -1,11 +1,11 @@
-import 'package:ame/api/api_client.dart';
-import 'package:ame/api/api_route.dart';
+import 'package:ame/resources/api/api_client.dart';
+import 'package:ame/resources/api/api_route.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/singleton/locator.dart';
 import 'package:flutter/material.dart';
 
-import '../../api/api_response.dart';
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/api/api_response.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/models/fetch_characters.dart';
 import '../tab_bar_page/home.dart';
 

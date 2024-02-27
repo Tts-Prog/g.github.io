@@ -267,7 +267,7 @@ class ViewUtil {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Event name, if big take 2 lines or 3 lines as i said it should be"
+                          eventInstance.title!
                               .moveIntoNewLinesAfter(20)
                               .truncateWithEllipses(53),
                           style: const TextStyle().bodyMedium,
@@ -349,7 +349,7 @@ class ViewUtil {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        eventInstance.category?.name ?? "",
+                        eventInstance.title ?? "",
                         style: const TextStyle().titleSmall.makeDefault,
                       ).spaceTo(bottom: 8),
                       Row(

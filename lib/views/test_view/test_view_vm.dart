@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:ame/api/api_client.dart';
-import 'package:ame/api/api_response.dart';
-import 'package:ame/api/api_route.dart';
-import 'package:ame/api/log_interceptor.dart';
+import 'package:ame/resources/api/api_client.dart';
+import 'package:ame/resources/api/api_response.dart';
+import 'package:ame/resources/api/api_route.dart';
+import 'package:ame/resources/api/log_interceptor.dart';
 import 'package:ame/resources/models/fetch_characters.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import '../../base_view_model/base_view_model.dart';
+import '../../resources/base_view_model/base_view_model.dart';
 
 class TestViewViewModel extends BaseViewModel {
   String title = "Template Title";

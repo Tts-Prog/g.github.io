@@ -78,73 +78,91 @@ class _ExploreState extends State<Explore> {
                         ),
 
                         Expanded(
-                            child: Stack(
-                          children: [
-                            CustomDropdown<int>(
-                              items: [
-                                0,
-                                1,
-                                2,
-                                3,
-                              ],
-                              //  fieldColor: Colors.transparent,
-                              // onTap: () {
-                              //   setState(() {
-                              //     selectedValue = 1;
-                              //     hideDropDownMotif = true;
-                              //   });
-                              // },
-                              value: selectedValue,
-                              onChanged: (value) async {
-                                setState(() {
-                                  selectedValue = value!;
-                                  hideDropDownMotif = false;
-                                  if (value == 0) {
-                                    model.getEvents();
-                                  } else {
-                                    model.getEventsByDate(DateTime.now()
-                                        .subtract(Duration(days: value))
-                                        .toString());
-                                  }
-                                });
-                              },
-                              itemBuilder: (item) =>
-                                  ViewUtil.customOutlineContainer(
-                                // margin: EdgeInsets.only(bottom: 12.0),
-                                width: 100,
-                                borderRadius: 20,
-                                backgroundColor: const Color(0xFF607D82),
-                                child: Center(
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        dayLimits[item].toString(),
-                                        style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w900)
-                                            .makeWhite,
-                                      ),
-                                      const Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        size: 5,
-                                        color: Colors.white,
-                                      )
-                                    ],
+                            child: CustomDropdown<int>(
+                          widget: ViewUtil.customOutlineContainer(
+                            // margin: EdgeInsets.only(bottom: 12.0),
+                            width: 100,
+                            height: 40,
+                            borderRadius: 20,
+                            backgroundColor: const Color(0xFF607D82),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const SizedBox(
+                                    width: 5,
                                   ),
-                                ),
-                              ).spaceTo(bottom: 5),
+                                  Text(
+                                    dayLimits[selectedValue],
+                                    style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w900)
+                                        .makeWhite,
+                                  ),
+                                  const Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ).spaceTo(right: 8)
+                                ],
+                              ),
                             ),
-                            hideDropDownMotif
-                                ? Container(
-                                    height: 35,
-                                    width: 100,
-                                    color: AppColors.typographySubColor,
+                          ).spaceTo(bottom: 5),
+
+                          items: const [0, 1, 2, 3],
+                          //  fieldColor: Colors.transparent,
+                          // onTap: () {
+                          //   setState(() {
+                          //     selectedValue = 1;
+                          //     hideDropDownMotif = true;
+                          //   });
+                          // },
+                          value: selectedValue,
+                          onChanged: (value) async {
+                            setState(() {
+                              selectedValue = value!;
+                              hideDropDownMotif = false;
+                              if (value == 0) {
+                                model.getEvents();
+                              } else {
+                                model.getEventsByDate(DateTime.now()
+                                    .subtract(Duration(days: value))
+                                    .toString());
+                              }
+                            });
+                          },
+                          itemBuilder: (item) =>
+                              ViewUtil.customOutlineContainer(
+                            // margin: EdgeInsets.only(bottom: 12.0),
+                            width: 100,
+                            height: 40,
+                            borderRadius: 20,
+                            backgroundColor: const Color(0xFF607D82),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    dayLimits[item].toString(),
+                                    style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w900)
+                                        .makeWhite,
+                                  ),
+                                  const Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    size: 5,
+                                    color: Colors.white,
                                   )
-                                : const SizedBox.shrink(),
-                          ],
+                                ],
+                              ),
+                            ),
+                          ).spaceTo(bottom: 5),
                         ))
 
                         // ViewUtil.customOutlineContainer(

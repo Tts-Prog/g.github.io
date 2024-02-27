@@ -11,44 +11,44 @@ class CustomDropdown<T> extends StatelessWidget {
   final Color? textColor;
   final Color? arrowColor;
   final VoidCallback? onTap;
+  final Widget widget;
 
-  CustomDropdown(
-      {required this.items,
+  const CustomDropdown(
+      {super.key,
+      required this.items,
       required this.value,
       required this.onChanged,
       required this.itemBuilder,
       this.itemSpacing = 8.0,
       this.textColor,
       this.arrowColor,
+      required this.widget,
       this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonHideUnderline(
-      child: DropdownButton<T>(
-        value: value,
-        isDense: false, isExpanded: true,
-        onTap: () {},
-        onChanged: onChanged,
-        focusColor: Colors.blue,
-        items: List.generate(
-          items.length,
-          (index) => DropdownMenuItem<T>(
-            value: items[index],
-            child: itemBuilder(items[index]),
-            //  padding: EdgeInsets.symmetric(vertical: 8.0),
-          ),
+    return PopupMenuButton<T>(
+      child: widget,
+      // value: value,
+      // isDense: false, isExpanded: true,
+      // onTap: () {},
+      onSelected: onChanged,
+      surfaceTintColor: Colors.transparent,
+      color: Colors.transparent,
+      itemBuilder: (_) => List<PopupMenuEntry<T>>.generate(
+        items.length,
+        (index) => PopupMenuItem<T>(
+          value: items[index],
+          child: itemBuilder(items[index]),
+          //  padding: EdgeInsets.symmetric(vertical: 8.0),
         ),
-        selectedItemBuilder: (_) =>
-            items.map((item) => itemBuilder(item)).toList(),
-        style: TextStyle(
-          color: textColor, // Set text color
-        ),
-        icon: Icon(Icons.arrow_drop_down,
-            color: Colors.transparent), // Set arrow color
-        dropdownColor: Colors.transparent,
-        elevation: 0,
       ),
+
+      // icon: Icon(Icons.arrow_drop_down,
+      //     color: Colors.transparent), // Set arrow color
+      //  dropdownColor: Colors.transparent,
+      elevation: 0,
+      position: PopupMenuPosition.under,
     );
   }
 }
@@ -72,6 +72,7 @@ class _AppCustomDropDownState extends State<AppCustomDropDown> {
   @override
   Widget build(BuildContext context) {
     return CustomDropdown<String>(
+      widget: Container(),
       value: selectedValue,
       onChanged: (newValue) {
         setState(() {
