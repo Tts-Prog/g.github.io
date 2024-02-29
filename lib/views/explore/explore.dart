@@ -17,7 +17,9 @@ import '../search_page/search_page.dart';
 import 'explore_view_model.dart';
 
 class Explore extends StatefulWidget {
-  const Explore({Key? key}) : super(key: key);
+  const Explore({Key? key, required this.email, required this.id})
+      : super(key: key);
+  final String email, id;
   static String routeName = "/insurance";
 
   @override
@@ -37,7 +39,7 @@ class _ExploreState extends State<Explore> {
       viewModelBuilder: () => ExploreViewModel(),
       onViewModelReady: (model) {
         this.model = model;
-        model.init(context);
+        model.init(context, widget.id);
       },
       builder: (context, _, __) => DefaultScaffold(
           appBarLogoColor: Colors.white,
@@ -124,7 +126,7 @@ class _ExploreState extends State<Explore> {
                               selectedValue = value!;
                               hideDropDownMotif = false;
                               if (value == 0) {
-                                model.getEvents();
+                                model.getEvents(widget.id);
                               } else {
                                 model.getEventsByDate(DateTime.now()
                                     .subtract(Duration(days: value))
@@ -298,6 +300,8 @@ class _ExploreState extends State<Explore> {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance, context);
+    return ViewUtil.eventContainer(eventInstance, context, () async {
+      model.saveAnEvent(eventInstance, widget.id);
+    });
   }
 }

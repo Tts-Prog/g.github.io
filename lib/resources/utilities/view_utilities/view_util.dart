@@ -302,7 +302,7 @@ class ViewUtil {
   }
 
   static Widget eventContainer(
-      EventInstance eventInstance, BuildContext context) {
+      EventInstance eventInstance, BuildContext context, VoidCallback onTap) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -373,7 +373,8 @@ class ViewUtil {
                   Row(
                     children: [
                       ViewUtil.shareBlock().spaceTo(right: 20),
-                      ViewUtil.bookmarkBlock()
+                      GestureDetector(
+                          onTap: onTap, child: ViewUtil.bookmarkBlock())
                     ],
                   )
                 ],
@@ -386,38 +387,38 @@ class ViewUtil {
                     height: 24,
                     child: Stack(
                       children: [
-                        Positioned(
-                            left: 36,
-                            child: eventInstance.users!.length > 2
-                                ? ViewUtil.networkCircleImage(
-                                    radius: 12,
-                                    networkImageStrng:
-                                        eventInstance.users![2].image)
-                                : const SizedBox()),
-                        Positioned(
-                            left: 18,
-                            child: eventInstance.users!.length > 1
-                                ? ViewUtil.networkCircleImage(
-                                    radius: 12,
-                                    networkImageStrng:
-                                        eventInstance.users![1].image)
-                                : const SizedBox()),
-                        eventInstance.users!.isNotEmpty
-                            ? ViewUtil.networkCircleImage(
-                                radius: 12,
-                                networkImageStrng:
-                                    eventInstance.users![0].image)
-                            : const SizedBox()
+                        // Positioned(
+                        //     left: 36,
+                        //     child: eventInstance.users!.length > 2
+                        //         ? ViewUtil.networkCircleImage(
+                        //             radius: 12,
+                        //             networkImageStrng:
+                        //                 eventInstance.users![2].image)
+                        //         : const SizedBox()),
+                        // Positioned(
+                        //     left: 18,
+                        //     child: eventInstance.users!.length > 1
+                        //         ? ViewUtil.networkCircleImage(
+                        //             radius: 12,
+                        //             networkImageStrng:
+                        //                 eventInstance.users![1].image)
+                        //         : const SizedBox()),
+                        // eventInstance.users!.isNotEmpty
+                        //     ? ViewUtil.networkCircleImage(
+                        //         radius: 12,
+                        //         networkImageStrng:
+                        //             eventInstance.users![0].image)
+                        //     : const SizedBox()
                       ],
                     ),
                   ).spaceTo(right: 4, bottom: 12),
-                  Text(
-                    eventInstance.users!.length > 3
-                        ? "+${eventInstance.users!.length - 3} Going"
-                        : "",
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w500),
-                  )
+                  // Text(
+                  //   eventInstance.users!.length > 3
+                  //       ? "+${eventInstance.users!.length - 3} Going"
+                  //       : "",
+                  //   style: const TextStyle(
+                  //       fontSize: 12, fontWeight: FontWeight.w500),
+                  // )
                 ],
               ).spaceTo(bottom: 8),
               Row(

@@ -62,13 +62,18 @@ class _EventsPageState extends State<EventsPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white.withOpacity(0.3),
-                            child: const Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                            ),
-                          ).spaceTo(right: 16),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white.withOpacity(0.3),
+                              child: const Icon(
+                                Icons.arrow_back_sharp,
+                                color: Colors.white,
+                              ),
+                            ).spaceTo(right: 16),
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,8 +116,8 @@ class _EventsPageState extends State<EventsPage> {
                           "${widget.eventInstance.startTime?.getDayOfWeek()}, ${widget.eventInstance.startTime?.toFormattedTime()}" ??
                               "",
                           AppAssets.calendarIcon),
-                      eventInfoTile(widget.eventInstance.location ?? "",
-                          "36, Guild street London UK", AppAssets.locationIcon),
+                      eventInfoTile(widget.eventInstance.location ?? "", "",
+                          AppAssets.locationIcon),
                       Text(
                         "Artistes",
                         style: const TextStyle().titleSmall,
@@ -239,7 +244,8 @@ class _EventsPageState extends State<EventsPage> {
                           )),
                       Positioned(
                           left: 22,
-                          child: widget.eventInstance.users!.length > 1
+                          child: widget.eventInstance.users != null &&
+                                  widget.eventInstance.users!.length > 1
                               ? CircleAvatar(
                                   radius: 17.9,
                                   backgroundColor: Colors.black,
@@ -250,7 +256,8 @@ class _EventsPageState extends State<EventsPage> {
                                       : const SizedBox(),
                                 )
                               : SizedBox()),
-                      widget.eventInstance.users!.length > 2
+                      widget.eventInstance.users != null &&
+                              widget.eventInstance.users!.length > 2
                           ? CircleAvatar(
                               radius: 17.9,
                               backgroundColor: Colors.amber,
@@ -265,7 +272,8 @@ class _EventsPageState extends State<EventsPage> {
                   ),
                 ).spaceTo(left: 30),
                 Text(
-                  widget.eventInstance.users!.length > 3
+                  widget.eventInstance.users != null &&
+                          widget.eventInstance.users!.length > 3
                       ? "+${widget.eventInstance.users!.length - 3} Going"
                       : "",
                   style: const TextStyle().bodyMedium.makeWhite,
