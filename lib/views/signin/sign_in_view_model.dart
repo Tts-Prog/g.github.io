@@ -52,18 +52,24 @@ class SignInViewModel extends BaseViewModel {
         create: () =>
             APIResponse<LoginResponse>(create: () => LoginResponse()));
 
-    if (response.response.data == null) {
+    if (response.response.errorMessage == null) {
       setBusy(false);
-      ViewUtil.showSnackBar(context, "Connection error");
-    } else if (response.response.errorMessage == null) {
-      setBusy(true);
-
-      navigateToOpener(response.response.data!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Home(
+                  email: email,
+                  id: response.response.data!.login!.id!,
+                )),
+      );
+    } else if (response.response.errorMessage != null) {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, response.response.errorMessage);
 
       // _authService.setId(dynamicInfo!.getUser!.id!);
     } else {
       setBusy(false);
-      ViewUtil.showSnackBar(context, response.response.errorMessage);
+      ViewUtil.showSnackBar(context, "Connection error");
     }
 
     // setBusy(false);
@@ -76,12 +82,12 @@ class SignInViewModel extends BaseViewModel {
     var dynamicInfo =
         await _authService.getUserProfileInfoManually(email, userId!);
 
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
-    });
+    // Future.delayed(Duration(seconds: 3), () {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => const Home()),
+    //   );
+    // });
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => const Home()),

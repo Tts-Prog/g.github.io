@@ -24,39 +24,50 @@ class ExploreViewModel extends BaseViewModel {
   UserProfileInfo? userProfileInfo;
   String email = "";
 
-  init(BuildContext context) {
+  init(BuildContext context, String id) {
     setBusy(true);
-    userIdent = _authService.userProfileInfo!.getUser!.id!;
-    email = _authService.userProfileInfo!.getUser!.email!;
-    this.context = context;
 
-    getEvents();
+    this.context = context;
+    //userIdent = _authService.userProfileInfo!.getUser!.id!;
+    //email = _authService.userProfileInfo!.getUser!.email!;
+
+    getEvents(id);
     setBusy(false);
   }
 
-  getEvents() async {
+  getEvents(String id) async {
     setBusy(true);
-    await _authService.getAllEventsInfo();
-    // String query = """
-    // query { events {
-    // category_id  createdAt  description  duration  id  image  location  start_time  subtitle  title updatedAt
-    // category {  color  createdAt  id  name updatedAt  }
-    // users { image id  name createdAt  updatedAt }
-    // artists {  role  artist {  biography  createdAt  id  image  name  nationality  roles updatedAt  }}
-    // }
-    //   categories {  color  createdAt  id  name  updatedAt }  }""";
 
-    // var response = await _apiService.request(
-    //     route: ApiRoute(ApiType.checkEmail),
-    //     data: {"query": query},
-    //     create: () =>
-    //         APIResponse<AllEventsResponse>(create: () => AllEventsResponse()));
+    String query = """
+    query { events {
+    category_id  createdAt  description  duration  id  image  location  latitude longitude  start_time  subtitle  title updatedAt
+    category {  color  createdAt  id  name updatedAt  }
+    users { image id  name createdAt  updatedAt }
+    isSaved {  
+        createdAt  event_id  id  updatedAt  user_id  
+    }
+    artists {  role  artist {  biography  createdAt  id  image  name  nationality  roles updatedAt  }}
+    }
+      categories {  color  createdAt  id  name  updatedAt }  }""";
 
-    // if (response.response.errorMessage == null) {
-    setBusy(true);
-    allEventsResponse = _authService.allEventsResponse;
-    events = allEventsResponse!.eventInstances!;
-    categories = allEventsResponse!.categories!;
+    var response = await _apiService.request(
+        header: {
+          "user_id": "${id}",
+          // 'accept': 'application/json',
+          'content-type': 'application/json'
+        },
+        route: ApiRoute(ApiType.fetchEventsDetails),
+        data: {"query": query},
+        create: () =>
+            APIResponse<AllEventsResponse>(create: () => AllEventsResponse()));
+
+    if (response.response.data != null) {
+      allEventsResponse = response.response.data;
+      events = allEventsResponse!.eventInstances!;
+      categories = allEventsResponse!.categories!;
+    }
+    // setBusy(true);
+
     setBusy(false);
   }
 
