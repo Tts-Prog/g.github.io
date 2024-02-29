@@ -27,8 +27,9 @@ class AuthenticationService with ListenableServiceMixin {
   Future<AllEventsResponse?> getAllEventsInfo() async {
     String queryEvents = """
     query { events {
-    category_id  createdAt  description  duration  id  image  location  start_time  subtitle  title updatedAt
+    category_id  createdAt  description  duration  id  image  location  start_time  subtitle  title updatedAt  latitude longitude
     category {  color  createdAt  id  name updatedAt  }
+    isSaved {  createdAt  event_id  id  updatedAt  user_id  }
     users { image id  name createdAt  updatedAt }
     artists {  role  artist {  biography  createdAt  id  image  name  nationality  roles updatedAt  }}
     }
@@ -49,7 +50,8 @@ class AuthenticationService with ListenableServiceMixin {
   Future<UserProfileInfo?> getUserProfileInfo(String email) async {
     String queryUserProfileInfo = """mutation {
   getUser(email: "$email") {
-    updatedAt  password  name  image  id email  createdAt events {
+    updatedAt  password  name  image  id email  createdAt 
+    events {
       artists {
         artist {
           biography  createdAt  id  image  name  nationality  roles  updatedAt
@@ -62,6 +64,9 @@ class AuthenticationService with ListenableServiceMixin {
       createdAt  description  duration  id  image  location  start_time  subtitle  title  updatedAt  category_id
       users {
         createdAt  email  id  image  name  password  updatedAt
+      }
+      isSaved {  
+        createdAt  event_id  id  updatedAt  user_id  
       }
     }
   }

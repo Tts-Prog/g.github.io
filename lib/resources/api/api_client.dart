@@ -37,6 +37,7 @@ class APIClient implements BaseAPIClient {
     required APIRouteConfigurable route,
     required Create<T> create,
     dynamic data,
+    //  dynamic headers
   }) async {
     final config = route.getConfig();
     if (config == null) {
@@ -48,10 +49,11 @@ class APIClient implements BaseAPIClient {
 
     config.baseUrl = options.baseUrl;
     if (data != null) {
-      if (config.method == ApiMethod.get) {
+      if (config.method == ApiMethod.post) {
         config.queryParameters = data;
       } else {
         config.data = data;
+        //  config.headers = headers;
       }
     }
     try {

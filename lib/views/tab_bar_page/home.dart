@@ -1,6 +1,7 @@
 import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
+import 'package:ame/views/events_map/events_map.dart';
 import 'package:ame/views/explore/explore.dart';
 import 'package:ame/views/profile/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class _HomeState extends State<Home> {
   //New
   static const List<Widget> _pages = <Widget>[
     Explore(),
-    Placeholder(),
+    EventsMap(),
     ProfilePage(),
     //  Menu(),
   ];

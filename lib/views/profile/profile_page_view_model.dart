@@ -70,8 +70,11 @@ mutation RemoveSavedEvent {
 """;
 
     var response = await _apiService.request(
-        route: ApiRoute(ApiType.checkEmail),
+        route: ApiRoute(
+          ApiType.checkEmail,
+        ),
         data: {"query": query},
+        
         create: () => APIResponse<EventRemovalResponse>(
             create: () => EventRemovalResponse()));
 

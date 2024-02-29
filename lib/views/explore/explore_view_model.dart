@@ -66,7 +66,9 @@ class ExploreViewModel extends BaseViewModel {
     String query = """
     query  {
   eventsByDay(date: "$dateOfEvent") {
-      category_id  createdAt  description  duration  id  image  location  start_time  subtitle  title updatedAt    category {  color  createdAt  id  name updatedAt  }users { image id  name createdAt  updatedAt }    artists {  role  artist {  biography  createdAt  id  image  name  nationality  roles updatedAt  }}   }     categories {  color  createdAt  id  name  updatedAt }
+      category_id  createdAt  description  duration  id  image  location  start_time  subtitle  title updatedAt   latitude  longitude     
+      isSaved {  createdAt  event_id  id  updatedAt  user_id  }
+      category {  color  createdAt  id  name updatedAt  }users { image id  name createdAt  updatedAt }    artists {  role  artist {  biography  createdAt  id  image  name  nationality  roles updatedAt  }}   }     categories {  color  createdAt  id  name  updatedAt }
   
 }""";
 
