@@ -45,9 +45,13 @@ class _EventsMapState extends State<EventsMap> {
                   TileLayerOptions(
                       urlTemplate:
                           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      subdomains: ['a', 'b', 'c', "d"]),
+                      subdomains: [
+                        'a',
+                        'b',
+                        'c',
+                      ]),
                   MarkerLayerOptions(
-                    markers: locations
+                    markers: model.locations
                         .map((location) => Marker(
                               width: 80.0,
                               height: 80.0,

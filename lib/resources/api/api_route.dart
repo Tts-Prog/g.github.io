@@ -27,9 +27,9 @@ class ApiRoute implements APIRouteConfigurable {
   final ApiType type;
   final String? routeParams;
   final Map<String, dynamic>? data;
-  final headers = {
+  Map<String, dynamic>? headers = {
     "user_id": "80",
-    'accept': 'application/json',
+    // 'accept': 'application/json',
     'content-type': 'application/json'
   };
   ApiRoute(this.type, {this.routeParams, this.data});
@@ -38,10 +38,9 @@ class ApiRoute implements APIRouteConfigurable {
     switch (type) {
       case ApiType.fetchListImage:
         return RequestOptions(
-          method: ApiMethod.post,
-          data: data,
-          //   headers: headers,
-        );
+            method: ApiMethod.post, data: data, headers: headers
+            //   headers: headers,
+            );
       case ApiType.checkEmail:
         return RequestOptions(
           method: ApiMethod.post,

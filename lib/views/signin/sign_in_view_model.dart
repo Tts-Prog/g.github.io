@@ -1,3 +1,4 @@
+import 'package:ame/resources/models/login_response.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/api/api_client.dart';
@@ -6,12 +7,15 @@ import '../../resources/api/api_route.dart';
 import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/models/fetch_characters.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
+import '../../services/authentication_service.dart';
 import '../../singleton/locator.dart';
 import '../tab_bar_page/home.dart';
 
 class SignInViewModel extends BaseViewModel {
   String title = "Template Title";
   late BuildContext context;
+  final _authService = locator<AuthenticationService>();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final APIClient _apiService = locator<APIClient>();
@@ -45,23 +49,49 @@ class SignInViewModel extends BaseViewModel {
     var response = await _apiService.request(
         route: ApiRoute(ApiType.signIn),
         data: {"query": query},
-        create: () => APIResponse<CharactersResponse>(
-            create: () => CharactersResponse()));
+        create: () =>
+            APIResponse<LoginResponse>(create: () => LoginResponse()));
 
     if (response.response.data == null) {
       setBusy(false);
       ViewUtil.showSnackBar(context, "Connection error");
     } else if (response.response.errorMessage == null) {
-      setBusy(false);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
+      setBusy(true);
+
+      navigateToOpener(response.response.data!);
+
+      // _authService.setId(dynamicInfo!.getUser!.id!);
     } else {
       setBusy(false);
       ViewUtil.showSnackBar(context, response.response.errorMessage);
     }
 
-    setBusy(false);
+    // setBusy(false);
+  }
+
+  navigateToOpener(LoginResponse? response) async {
+    setBusy(true);
+    String? userId = _authService.setId(response!.login!.id!);
+
+    var dynamicInfo =
+        await _authService.getUserProfileInfoManually(email, userId!);
+
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Home()),
+      );
+    });
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const Home()),
+    // );
+    // if (dynamicInfo == null) {
+    //   setBusy(false);
+    //   ViewUtil.showSnackBar(context, "Can't get profile ");
+    // } else {
+
+    //   setBusy(false);
+    // }
   }
 }
