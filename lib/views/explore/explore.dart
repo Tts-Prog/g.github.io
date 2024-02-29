@@ -301,9 +301,7 @@ class _ExploreState extends State<Explore> {
       return const SizedBox.shrink();
     }
     return ViewUtil.eventContainer(eventInstance, context, () async {
-      model.saveAnEvent(
-        eventInstance.id!,
-      );
+      model.saveAnEvent(eventInstance, widget.id);
     });
   }
 }

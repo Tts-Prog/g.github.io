@@ -21,49 +21,49 @@ class ProfilePageViewModel extends BaseViewModel {
 
   List<EventInstance> events = [];
 
-  // List<Category> categories = [];
-  List<Category> eventCategories = [];
+  List<Category> categories = [];
+  // List<Category> eventCategories = [];
 
   UserProfileInfo? userDetails;
   AllEventsResponse? allEventsResponse;
-  init(BuildContext context, String id, String email) {
+  init(BuildContext context, String email, String id) {
     setBusy(true);
     this.context = context;
     // _authService
     //     .getUserProfileInfo(_authService.userProfileInfo!.getUser!.email!);
     // userDetails = _authService.userProfileInfo;
-    addCategoriesToList();
-    getUserProfileInfo(id, email);
+    // addCategoriesToList();
+    getUserProfileInfo(email, id);
     setBusy(false);
     // eventCategories = _authService.allEventsResponse!.categories!;
   }
 
-  void addCategoriesToList() {
-    List<Category> allCategories = [];
-    // List<EventInstance> excessEvents = userDetails!.getUser!.events!;
-    // for (EventInstance element in excessEvents) {
-    //   if (!events.contains(element)) {
-    //     events.add(element);
-    //     events.toSet().toList();
-    //   }
-    // }
-    for (EventInstance eventItem in events) {
-      allCategories.add(eventItem.category!);
-    }
+  // void addCategoriesToList() {
+  //   List<Category> allCategories = [];
+  //   // List<EventInstance> excessEvents = userDetails!.getUser!.events!;
+  //   // for (EventInstance element in excessEvents) {
+  //   //   if (!events.contains(element)) {
+  //   //     events.add(element);
+  //   //     events.toSet().toList();
+  //   //   }
+  //   // }
+  //   for (EventInstance eventItem in events) {
+  //     allCategories.add(eventItem.category!);
+  //   }
 
-    List<String> idList = [];
-    for (Category element in allCategories) {
-      // if (!categories.contains(element)) {
-      //   categories.add(element);
+  //   List<String> idList = [];
+  //   for (Category element in allCategories) {
+  //     // if (!categories.contains(element)) {
+  //     //   categories.add(element);
 
-      //   idList.add(element.id!);
-      // }
-    }
-    print(idList.toSet().toList());
-    // events = excessEvents.toSet().toList();
-    //  categories = allCategories.toSet().toList();
-    print(events.toString());
-  }
+  //     //   idList.add(element.id!);
+  //     // }
+  //   }
+  //   print(idList.toSet().toList());
+  //   // events = excessEvents.toSet().toList();
+  //   //  categories = allCategories.toSet().toList();
+  //   print(events.toString());
+  // }
 
   getEvents(String id) async {
     setBusy(true);
@@ -94,15 +94,15 @@ class ProfilePageViewModel extends BaseViewModel {
     if (response.response.data != null) {
       allEventsResponse = response.response.data;
       //events = get!.eventInstances!;
-      eventCategories = allEventsResponse!.categories!;
+      categories = allEventsResponse!.categories!;
     }
     // setBusy(true);
 
     setBusy(false);
   }
 
-  removeSavedEvent(EventInstance eventInstance) async {
-    String removeSavedEventId = eventInstance.id!;
+  removeSavedEvent(EventInstance eventInstance, String id) async {
+    String removeSavedEventId = eventInstance.isSaved!.id!;
     String query = """
 mutation RemoveSavedEvent {
   removeSavedEvent(id: "$removeSavedEventId")
@@ -110,8 +110,13 @@ mutation RemoveSavedEvent {
 """;
 
     var response = await _apiService.request(
+        header: {
+          "user_id": "$id",
+          // 'accept': 'application/json',
+          'content-type': 'application/json'
+        },
         route: ApiRoute(
-          ApiType.checkEmail,
+          ApiType.removeSavedEvent,
         ),
         data: {"query": query},
         create: () => APIResponse<EventRemovalResponse>(
@@ -122,7 +127,7 @@ mutation RemoveSavedEvent {
       ViewUtil.showSnackBar(context, "Event Not Found");
     } else if (response.response.data!.removeSavedEvent == true) {
       setBusy(false);
-      events.removeWhere((element) => element.id == eventInstance.id);
+      events.remove(eventInstance);
       ViewUtil.showSnackBar(context, "Event removed");
     } else {
       ViewUtil.showSnackBar(context, response.response.errorMessage);
@@ -162,12 +167,13 @@ mutation RemoveSavedEvent {
           // 'accept': 'application/json',
           'content-type': 'application/json'
         },
-        route: ApiRoute(ApiType.fetchEventsDetails),
+        route: ApiRoute(ApiType.fetchUserInfo),
         data: {"query": queryUserProfileInfo},
         create: () =>
             APIResponse<UserProfileInfo>(create: () => UserProfileInfo()));
 
-    if (profileResponse.response.errorMessage != null) {
+    if (profileResponse.response.errorMessage != null &&
+        profileResponse.response.data == null) {
       setBusy(false);
       ViewUtil.showSnackBar(context, "Event Not Found");
     } else if (profileResponse.response.data != null) {

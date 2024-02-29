@@ -304,12 +304,12 @@ class IsSaved {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['createdAt'] = this.createdAt;
-    data['event_id'] = this.eventId;
-    data['id'] = this.id;
-    data['updatedAt'] = this.updatedAt;
-    data['user_id'] = this.userId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['createdAt'] = createdAt;
+    data['event_id'] = eventId;
+    data['id'] = id;
+    data['updatedAt'] = updatedAt;
+    data['user_id'] = userId;
     return data;
   }
 }

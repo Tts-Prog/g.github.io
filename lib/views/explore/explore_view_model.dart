@@ -28,8 +28,6 @@ class ExploreViewModel extends BaseViewModel {
     setBusy(true);
 
     this.context = context;
-    //userIdent = _authService.userProfileInfo!.getUser!.id!;
-    //email = _authService.userProfileInfo!.getUser!.email!;
 
     getEvents(id);
     setBusy(false);
@@ -52,7 +50,7 @@ class ExploreViewModel extends BaseViewModel {
 
     var response = await _apiService.request(
         header: {
-          "user_id": "${id}",
+          "user_id": "$id",
           // 'accept': 'application/json',
           'content-type': 'application/json'
         },
@@ -107,9 +105,9 @@ class ExploreViewModel extends BaseViewModel {
     }
   }
 
-  saveAnEvent(String eventId) async {
+  saveAnEvent(EventInstance eventInstance, String id) async {
     String query = """mutation  {
-   createSavedEvent(savedEvent: {event_id: $eventId, user_id: $userIdent}){
+   createSavedEvent(savedEvent: {event_id: ${eventInstance.id}, user_id: $id}){
     event_id
     id
     user_id
@@ -117,10 +115,8 @@ class ExploreViewModel extends BaseViewModel {
     updatedAt
   }
 }""";
-    userProfileInfo = _authService.userProfileInfo!;
-    List<EventInstance> eventInstanceList = userProfileInfo!.getUser!.events!;
 
-    if (eventInstanceList.isEmpty) {
+    if (eventInstance.isSaved == null) {
       setBusy(true);
 
       var response = await _apiService.request(
@@ -137,9 +133,10 @@ class ExploreViewModel extends BaseViewModel {
         ViewUtil.showSnackBar(context, response.response.errorMessage);
       } else if (response.response.data != null) {
         setBusy(false);
-        setBusy(true);
-        userProfileInfo = await _authService.getUserProfileInfo(email);
+
+        // userProfileInfo = await _authService.getUserProfileInfo(email);
         ViewUtil.showSnackBar(context, "Event Saved");
+        events.remove(eventInstance);
         notifyListeners();
         setBusy(false);
 
@@ -149,38 +146,8 @@ class ExploreViewModel extends BaseViewModel {
         ViewUtil.showSnackBar(context, "Connection error");
       }
     } else {
-      for (EventInstance eventInstance in eventInstanceList) {
-        if (eventId == eventInstance.id) {
-          setBusy(false);
-          ViewUtil.showSnackBar(context, "Already Saved Previously");
-        } else {
-          setBusy(true);
-          var response = await _apiService.request(
-              route: ApiRoute(ApiType.searchEventsByDate),
-              data: {"query": query},
-              create: () => APIResponse<SavedEventResponse>(
-                  create: () => SavedEventResponse()));
-          setBusy(false);
-
-          // if (response.response.errorMessage == null) {
-
-          if (response.response.errorMessage != null) {
-            setBusy(false);
-            ViewUtil.showSnackBar(context, response.response.errorMessage);
-          } else if (response.response.data != null) {
-            setBusy(true);
-            userProfileInfo = await _authService.getUserProfileInfo(email);
-            ViewUtil.showSnackBar(context, "Event Saved");
-            notifyListeners();
-            setBusy(false);
-
-            //
-          } else {
-            setBusy(false);
-            ViewUtil.showSnackBar(context, "Connection error");
-          }
-        }
-      }
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Saved Already");
     }
   }
 

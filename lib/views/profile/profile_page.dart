@@ -112,10 +112,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     allCategContainer().spaceTo(right: 4),
                     ...List.generate(
-                        model.eventCategories.length,
+                        model.categories.length,
                         (index) => categoryContainer(
-                                id: model.eventCategories[index].id!,
-                                category: model.eventCategories[index])
+                                id: model.categories[index].id!,
+                                category: model.categories[index])
                             .spaceTo(right: 4)).toSet().toList()
                   ],
                 ),
@@ -225,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return const SizedBox.shrink();
     }
     return ViewUtil.eventContainer(eventInstance, context, () {
-      model.removeSavedEvent(eventInstance);
+      model.removeSavedEvent(eventInstance, widget.id);
     });
   }
 }
