@@ -1,3 +1,5 @@
+import 'package:ame/resources/size_utilities/size_fitter.dart';
+import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +23,29 @@ class EventsMap extends StatefulWidget {
 
 class _EventsMapState extends State<EventsMap> {
   late EventsMapViewModel model;
-  final List<LatLng> locations = [
-    LatLng(51.5, -0.09), // London
-    LatLng(48.8566, 2.3522), // Paris
-    LatLng(40.7128, -74.0060), // New York
-    // Add more locations as needed
-  ];
+  // final List<LatLng> locations = [
+  //   LatLng(51.5, -0.09), // London
+  //   LatLng(48.8566, 2.3522), // Paris
+  //   LatLng(40.7128, -74.0060), // New York
+  //   // Add more locations as needed
+  // ];
   EventInstance? eventInstance;
 
   String selectedId = 'All'; // Track the selected ID
   int selectedValue = 1;
   bool showEventContainer = false;
   List dayLimits = ["All days", "1 day", "2 days", "3 days"];
+  MapController mapController = MapController();
+  void _focusMapOnLocation(double latitude, double longitude) {
+    // Move the map to the specified location and zoom level
+    setState(() {
+      // Define the location you want to focus on
+      final LatLng location =
+          LatLng(latitude, longitude); // Example: London, UK
+      final double zoom = 13.0;
+      mapController.move(location, zoom);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +61,7 @@ class _EventsMapState extends State<EventsMap> {
           body: Stack(
             children: [
               FlutterMap(
+                mapController: mapController,
                 options: MapOptions(
                   center: LatLng(14.9189, -23.5087), // Default map center
                   zoom: 15.0,
@@ -62,62 +76,96 @@ class _EventsMapState extends State<EventsMap> {
                         'c',
                       ]),
                   MarkerLayerOptions(
-                    markers:
-                        //  List.generate(
-                        //     model.events.length,
-                        //     (index) => Marker(
-                        //         point: LatLng(model.events[index].latitude!,
-                        //             model.events[index].latitude!),
-                        //         builder: (ctx) => GestureDetector(
-                        //             onTap: () {},
-                        //             child: Icon(
-                        //               Icons.baby_changing_station,
-                        //               size: 50,
-                        //             ))
-                        //   ViewUtil.customOutlineContainer(
-                        //       height: 30,
-                        //       width: 30,
-                        //       backgroundColor: Color(int.parse(model
-                        //           .events[index].category!.color!
-                        //           .replaceAll("#", "0x66"))),
-                        //       child: Text(model.events
-                        //           .indexOf(model.events[index])
-                        //           .toString())),
-                        // )
-                        // ))
-
-                        model.events
-                            .map((event) => Marker(
-                                  width: 80.0,
-                                  height: 80.0,
-                                  point:
-                                      LatLng(event.latitude!, event.longitude!),
-                                  builder: (ctx) =>
-                                      buildEventMapTag(event, selectedId),
-                                ))
-                            .toList(),
+                    markers: model.events
+                        .map((event) => Marker(
+                              width: 30.0,
+                              height: 30.0,
+                              point: LatLng(event.latitude!, event.longitude!),
+                              builder: (ctx) =>
+                                  buildEventMapTag(event, selectedId),
+                            ))
+                        .toList(),
                   ),
                 ],
               ),
               Positioned(
-                top: 80,
+                top: 40,
                 left: 20,
                 right: 20,
-                child: SizedBox(
-                  height: 52,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      allCategContainer().spaceTo(right: 4),
-                      ...List.generate(
-                          model.categories.length,
-                          (index) => categoryContainer(
-                                  id: model.categories[index].id!,
-                                  category: model.categories[index])
-                              .spaceTo(right: 4))
-                    ],
-                  ),
-                ).spaceTo(bottom: 20),
+                child: Column(
+                  children: [
+                    ViewUtil.customOutlineContainer(
+                      backgroundColor: Colors.white,
+                      borderRadius: 12,
+                      child: Autocomplete<EventInstance>(
+                        optionsBuilder: (textValue) {
+                          return model.events.where((element) => element.title!
+                              .toLowerCase()
+                              .contains(textValue.text.toLowerCase()));
+                        },
+                        onSelected: (option) {
+                          setState(() {
+                            selectedId = "All";
+                            _focusMapOnLocation(
+                                option.latitude!, option.longitude!);
+                            print(option.longitude!);
+                            eventInstance = option;
+                            showEventContainer = true;
+                          });
+                        },
+                        fieldViewBuilder: (BuildContext context,
+                            TextEditingController textEditingController,
+                            FocusNode focusNode,
+                            VoidCallback onFieldSubmitted) {
+                          return TextField(
+                            controller: textEditingController,
+                            focusNode: focusNode,
+                            decoration: InputDecoration(
+                              labelText: 'Find An Event',
+                            ),
+                          );
+                        },
+                        displayStringForOption: (obj) => obj.title!,
+                        optionsViewBuilder: (context, onSelected, options) {
+                          return ListView.builder(
+                              itemCount: options.length,
+                              itemBuilder: (context, ind) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    onSelected(options.toList()[ind]);
+                                  },
+                                  child: ViewUtil.customOutlineContainer(
+                                    //width: 200.w,
+                                    borderRadius: 12,
+                                    backgroundColor: Colors.white,
+                                    child: Text(
+                                      options.toList()[ind].title ?? "",
+                                      style: TextStyle().bodyMedium,
+                                    ).spaceSymmetrically(
+                                        horizontal: 12, vertical: 12),
+                                  ).spaceTo(bottom: 6, right: 50),
+                                );
+                              });
+                        },
+                      ),
+                    ).spaceTo(bottom: 12),
+                    SizedBox(
+                      height: 52,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          allCategContainer().spaceTo(right: 4),
+                          ...List.generate(
+                              model.categories.length,
+                              (index) => categoryContainer(
+                                      id: model.categories[index].id!,
+                                      category: model.categories[index])
+                                  .spaceTo(right: 4))
+                        ],
+                      ),
+                    ).spaceTo(bottom: 20),
+                  ],
+                ),
               ),
               Positioned(
                   bottom: 20,
@@ -142,17 +190,24 @@ class _EventsMapState extends State<EventsMap> {
         // Perform action when marker is tapped
         setState(() {
           eventInstance = event;
+          showEventContainer = true;
         });
         print('Marker tapped at ${event.location}');
       },
       child: ViewUtil.customOutlineContainer(
-          borderRadius: 6,
-          height: 5,
-          width: 5,
-          alignment: Alignment.center,
-          backgroundColor:
-              Color(int.parse(event.category!.color!.replaceAll("#", "0x66"))),
-          child: Text(model.events.indexOf(event).toString())),
+        backgroundColor: const Color(0xbb000000),
+        borderColor: Colors.transparent,
+        borderRadius: 12,
+        child: ViewUtil.customOutlineContainer(
+            borderRadius: 6,
+            height: 5,
+            width: 5,
+            alignment: Alignment.center,
+            backgroundColor:
+                Color(int.parse(event.category!.color!.replaceAll("#", "0x66")))
+                    .withOpacity(1),
+            child: Text(model.events.indexOf(event).toString())),
+      ),
     );
   }
 
@@ -210,14 +265,32 @@ class _EventsMapState extends State<EventsMap> {
   Widget buildEventContainer(
     EventInstance? eventInstance,
   ) {
-    if (showEventContainer == false && eventInstance == null) {
+    if (showEventContainer == false || eventInstance == null) {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance!, context, () async {
-      // model.saveAnEvent(
-      //   eventInstance.id!,
-      // );
-    });
+    return Stack(
+      children: [
+        ViewUtil.searchEventContainer(eventInstance!, context, () async {
+          // model.saveAnEvent(
+          //   eventInstance.id!,
+          // );
+        }),
+        Positioned(
+            bottom: 12,
+            right: 12,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  showEventContainer = false;
+                });
+              },
+              child: Icon(
+                Icons.close,
+                size: 20,
+              ),
+            ))
+      ],
+    );
   }
 }

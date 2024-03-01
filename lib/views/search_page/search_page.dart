@@ -103,6 +103,6 @@ class _SearchPageState extends State<SearchPage> {
 
       return const SizedBox.shrink();
     }
-    return ViewUtil.searchEventContainer(eventInstance, context);
+    return ViewUtil.searchEventContainer(eventInstance, context, () {});
   }
 }
