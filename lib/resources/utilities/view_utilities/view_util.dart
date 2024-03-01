@@ -224,7 +224,7 @@ class ViewUtil {
   }
 
   static Widget searchEventContainer(
-      EventInstance eventInstance, BuildContext context) {
+      EventInstance eventInstance, BuildContext context, VoidCallback onTap) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -293,7 +293,11 @@ class ViewUtil {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [ViewUtil.bookmarkBlock(), ViewUtil.shareBlock()],
+                  children: [
+                    GestureDetector(
+                        onTap: onTap, child: ViewUtil.bookmarkBlock()),
+                    ViewUtil.shareBlock()
+                  ],
                 ).spaceTo(top: 8, bottom: 12, right: 8)
               ],
             )).spaceAllAroundBy(4),
@@ -448,13 +452,13 @@ class ViewUtil {
         child: Container(
           height: 40,
           decoration: BoxDecoration(
-              color: tagColor.withOpacity(0.8),
+              color: tagColor.withOpacity(1),
               borderRadius: BorderRadius.circular(12)),
           child: Center(
             child: Text(
               category,
               style: const TextStyle().bodyMedium.makeWhite,
-            ).spaceSymmetrically(horizontal: 8, vertical: 4),
+            ).spaceSymmetrically(horizontal: 16, vertical: 4),
           ),
         ),
       ),
