@@ -1,4 +1,5 @@
 import 'package:ame/resources/size_utilities/size_fitter.dart';
+import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
@@ -121,8 +122,8 @@ class _EventsMapState extends State<EventsMap> {
                             controller: textEditingController,
                             focusNode: focusNode,
                             decoration: InputDecoration(
-                              labelText: 'Find An Event',
-                            ),
+                                labelText: 'Find An Event',
+                                labelStyle: TextStyle(color: Colors.red)),
                           );
                         },
                         displayStringForOption: (obj) => obj.title!,
@@ -206,7 +207,10 @@ class _EventsMapState extends State<EventsMap> {
             backgroundColor:
                 Color(int.parse(event.category!.color!.replaceAll("#", "0x66")))
                     .withOpacity(1),
-            child: Text(model.events.indexOf(event).toString())),
+            child: Text(
+              model.events.indexOf(event).toString(),
+              style: TextStyle(color: Colors.white),
+            )),
       ),
     );
   }

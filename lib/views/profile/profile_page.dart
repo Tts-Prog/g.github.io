@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../resources/models/all_events_response.dart';
-import '../../resources/utilities/textfields/borderless_fields.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
-import '../search_page/search_page.dart';
 import 'profile_page_view_model.dart';
 
 class ProfilePage extends StatefulWidget {

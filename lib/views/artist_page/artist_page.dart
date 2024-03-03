@@ -116,7 +116,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       ...List.generate(
                           model.artistEventList.length,
                           (index) => ViewUtil.searchEventContainer(
-                                  model.artistEventList[index], context)
+                                  model.artistEventList[index], context, () {})
                               .spaceTo(bottom: 8)),
 
                       //   ViewUtil.searchEventContainer()
