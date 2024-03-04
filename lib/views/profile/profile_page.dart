@@ -13,7 +13,9 @@ import '../search_page/search_page.dart';
 import 'profile_page_view_model.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key, required this.email, required this.id})
+      : super(key: key);
+  final String email, id;
   static String routeName = "/insurance";
 
   @override
@@ -29,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
       viewModelBuilder: () => ProfilePageViewModel(),
       onViewModelReady: (model) {
         this.model = model;
-        model.init(context);
+        model.init(context, widget.email, widget.id);
       },
       builder: (context, _, __) => DefaultScaffold(
           busy: model.busy,
@@ -61,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              model.userDetails!.getUser!.name!,
+                              model.userDetails?.getUser?.name ?? "",
                               style: const TextStyle().titleMedium.makeWhite,
                             ),
                             // Text(
@@ -114,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         (index) => categoryContainer(
                                 id: model.categories[index].id!,
                                 category: model.categories[index])
-                            .spaceTo(right: 4))
+                            .spaceTo(right: 4)).toSet().toList()
                   ],
                 ),
               ).spaceTo(bottom: 20),
@@ -134,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         (index) => buildEventContainer(
                               model.events[index],
                               selectedId,
-                            ).spaceTo(bottom: 8)),
+                            ).spaceTo(bottom: 8)).toSet().toList(),
                   ],
                 ),
               )),
@@ -222,6 +224,8 @@ class _ProfilePageState extends State<ProfilePage> {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance, context);
+    return ViewUtil.eventContainer(eventInstance, context, () {
+      model.removeSavedEvent(eventInstance, widget.id);
+    });
   }
 }

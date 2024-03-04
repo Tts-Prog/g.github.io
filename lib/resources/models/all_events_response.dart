@@ -59,6 +59,9 @@ class EventInstance {
   String? title;
   DateTime? updatedAt;
   List<Users>? users;
+  double? latitude;
+  double? longitude;
+  IsSaved? isSaved;
 
   EventInstance(
       {this.artists,
@@ -74,7 +77,10 @@ class EventInstance {
       this.subtitle,
       this.title,
       this.updatedAt,
-      this.users});
+      this.users,
+      this.latitude,
+      this.longitude,
+      this.isSaved});
 
   EventInstance fromJson(Map<String, dynamic> json) {
     if (json['artists'] != null) {
@@ -106,6 +112,11 @@ class EventInstance {
         users?.add(Users().fromJson(v));
       });
     }
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    isSaved =
+        json['isSaved'] != null ? IsSaved().fromJson(json['isSaved']) : null;
+
     return this;
   }
 
@@ -130,6 +141,11 @@ class EventInstance {
     data['updatedAt'] = updatedAt;
     if (users != null) {
       data['users'] = users?.map((v) => v.toJson()).toList();
+    }
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    if (isSaved != null) {
+      data['isSaved'] = isSaved!.toJson();
     }
     return data;
   }
@@ -265,6 +281,35 @@ class Users {
     data['name'] = name;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    return data;
+  }
+}
+
+class IsSaved {
+  String? createdAt;
+  int? eventId;
+  String? id;
+  String? updatedAt;
+  int? userId;
+
+  IsSaved({this.createdAt, this.eventId, this.id, this.updatedAt, this.userId});
+
+  IsSaved fromJson(Map<String, dynamic> json) {
+    createdAt = json['createdAt'];
+    eventId = json['event_id'];
+    id = json['id'];
+    updatedAt = json['updatedAt'];
+    userId = json['user_id'];
+    return this;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['createdAt'] = createdAt;
+    data['event_id'] = eventId;
+    data['id'] = id;
+    data['updatedAt'] = updatedAt;
+    data['user_id'] = userId;
     return data;
   }
 }

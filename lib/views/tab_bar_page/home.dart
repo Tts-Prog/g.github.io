@@ -1,12 +1,16 @@
 import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
+import 'package:ame/views/events_map/events_map.dart';
 import 'package:ame/views/explore/explore.dart';
 import 'package:ame/views/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({Key? key, required this.email, required this.id})
+      : super(key: key);
+
+  final String email, id;
 
   static String routeName = "/home";
 
@@ -16,13 +20,36 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+  String email = "";
+  String id = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    email = widget.email;
+    id = widget.id;
+    super.initState();
+  }
+
   //New
-  static const List<Widget> _pages = <Widget>[
-    Explore(),
-    Placeholder(),
-    ProfilePage(),
-    //  Menu(),
-  ];
+  List<Widget> pageList() {
+    List<Widget> listOfPages = <Widget>[
+      Explore(
+        id: id,
+        email: widget.email,
+      ),
+      EventsMap(
+        id: id,
+        email: widget.email,
+      ),
+      ProfilePage(
+        id: id,
+        email: widget.email,
+      ),
+    ];
+    return listOfPages;
+  }
+
+  //static List<Widget> _pages =
 
   Color tabBarItemColor(int index) {
     return _selectedIndex == index
@@ -33,7 +60,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages.elementAt(_selectedIndex),
+      body: pageList().elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: AppColors.selectedNavBarItem,
         unselectedItemColor: AppColors.unselectedNavBarItem,

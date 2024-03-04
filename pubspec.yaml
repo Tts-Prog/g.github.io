@@ -35,6 +35,8 @@ dependencies:
   stacked: ^3.0.1
   shared_preferences: ^2.0.13
   intl:
+  flutter_map: ^0.13.1
+  latlong2:
 
 
   # The following adds the Cupertino Icons font to your application.

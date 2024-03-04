@@ -112,7 +112,9 @@ mutation {
         context,
         MaterialPageRoute(
             builder: (context) => Home(
-                // email: email,
+                  email: email,
+                  id: id,
+                  // email: email,
                 )),
       );
     } else {

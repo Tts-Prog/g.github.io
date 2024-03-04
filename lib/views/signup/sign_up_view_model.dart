@@ -1,12 +1,16 @@
 import 'package:ame/resources/api/api_client.dart';
 import 'package:ame/resources/api/api_route.dart';
+import 'package:ame/resources/models/create_user_response.dart';
+import 'package:ame/resources/models/login_response.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
+import 'package:ame/services/authentication_service.dart';
 import 'package:ame/singleton/locator.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/api/api_response.dart';
 import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/models/fetch_characters.dart';
+import '../../resources/models/get_user_info_response.dart';
 import '../tab_bar_page/home.dart';
 
 class SignUpViewModel extends BaseViewModel {
@@ -21,6 +25,7 @@ class SignUpViewModel extends BaseViewModel {
   String name = "";
   String password = "";
   bool isButtonEnabled = false;
+  final _authService = locator<AuthenticationService>();
 
   final contactFormKey = GlobalKey<FormState>();
 
@@ -54,21 +59,24 @@ mutation  {
     var response = await _apiService.request(
         route: ApiRoute(ApiType.fetchEventsDetails),
         data: {"query": query},
-        create: () => APIResponse<CharactersResponse>(
-            create: () => CharactersResponse()));
+        create: () => APIResponse<CreateUserResponse>(
+            create: () => CreateUserResponse()));
     // print("The status we got is" + response.response.errorMessage!);
 
     if (response.response.errorMessage == null) {
       setBusy(false);
+
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(
+            builder: (context) => Home(
+                  email: email,
+                  id: response.response.data!.createUser!.id!,
+                )),
       );
     } else {
       setBusy(false);
       ViewUtil.showSnackBar(context, response.response.errorMessage);
     }
-
-    setBusy(false);
   }
 }
