@@ -11,9 +11,11 @@ import '../../resources/utilities/view_utilities/view_util.dart';
 import 'artist_page_view_model.dart';
 
 class ArtistPage extends StatefulWidget {
-  ArtistPage({Key? key, required this.artist}) : super(key: key);
+  ArtistPage({Key? key, required this.artist, required this.eventInstance})
+      : super(key: key);
   static String routeName = "/insurance";
   Artist artist;
+  EventInstance eventInstance;
 
   @override
   State<ArtistPage> createState() => _ArtistPageState();
@@ -153,7 +155,10 @@ class _ArtistPageState extends State<ArtistPage> {
                 SizedBox(
                   width: 80,
                   child: ViewUtil.customOutlineContainer(
-                      backgroundColor: const Color(0xCC29E6DC),
+                      backgroundColor: Color(int.parse(widget
+                              .eventInstance.category!.color!
+                              .replaceAll("#", "0x66")))
+                          .withOpacity(0.8),
                       height: 39.h,
                       width: 96.w,
                       borderRadius: 10,

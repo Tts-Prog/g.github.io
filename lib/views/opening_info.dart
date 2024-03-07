@@ -1,6 +1,8 @@
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
+import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/view_utilities/default_scaffold.dart';
+import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:ame/views/email_check/email_check.dart';
 import 'package:ame/views/signup/signup.dart';
@@ -42,96 +44,100 @@ class _OpeningInfoState extends State<OpeningInfo> {
         isInfoBottomSheetPresent: true,
         showAppBarBackButton: false,
         body: SafeArea(
-          child: Stack(
-            children: [
-              // Positioned(
-              //     top: 20,
-              //     left: 50,
-              //     right: 50,
-              //     child: ViewUtil.ameLogo(
-              //         color: AppColors.ameSplashScreenBgColor, height: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: designHeight.h * 0.35,
-                    width: designWidth.w,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 160.h,
-                          child: PageView.builder(
-                            controller: _pageController,
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              return infoCarouselList[index];
-                            },
-                            onPageChanged: (page) {
-                              setState(() {
-                                selectedPage = page;
-                              });
-                            },
-                          ),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Positioned(
+                    top: 0,
+                    left: 50,
+                    right: 50,
+                    child: ViewUtil.customOutlineContainer(
+                      isShadowPresent: true,
+                      child: Image.asset(
+                        AppAssets.homeHolder,
+                        scale: 5,
+                        //width: 295.w,
+                      ),
+                    )),
+                Container(
+                  alignment: Alignment.center,
+                  height: designHeight.h * 0.35,
+                  width: designWidth.w,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 160.h,
+                        child: PageView.builder(
+                          controller: _pageController,
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return infoCarouselList[index];
+                          },
+                          onPageChanged: (page) {
+                            setState(() {
+                              selectedPage = page;
+                            });
+                          },
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const EmailCheck()),
+                              );
+                            },
+                            child: Text("Skip",
+                                style: const TextStyle().bodyLarge.makeWhite),
+                          ),
+                          Expanded(
+                            child: PageViewDotIndicator(
+                              currentItem: selectedPage,
+                              count: 3,
+                              unselectedColor: Colors.grey,
+                              selectedColor: Colors.white,
+                              size: const Size(8, 8),
+                              unselectedSize: const Size(8, 8),
+                              duration: const Duration(milliseconds: 200),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              padding: EdgeInsets.zero,
+                              alignment: Alignment.center,
+                              fadeEdges: false,
+                            ),
+                          ),
+                          GestureDetector(
                               onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const EmailCheck()),
-                                );
+                                if (selectedPage != 2) {
+                                  _goToNextPage();
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const EmailCheck()),
+                                  );
+                                }
                               },
-                              child: Text("Skip",
-                                  style: const TextStyle().bodyLarge.makeWhite),
-                            ),
-                            Expanded(
-                              child: PageViewDotIndicator(
-                                currentItem: selectedPage,
-                                count: 3,
-                                unselectedColor: Colors.grey,
-                                selectedColor: Colors.white,
-                                size: const Size(8, 8),
-                                unselectedSize: const Size(8, 8),
-                                duration: const Duration(milliseconds: 200),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
-                                padding: EdgeInsets.zero,
-                                alignment: Alignment.center,
-                                fadeEdges: false,
-                              ),
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  if (selectedPage != 2) {
-                                    _goToNextPage();
-                                  } else {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const EmailCheck()),
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  "Next",
-                                  style: const TextStyle().bodyLarge.makeWhite,
-                                )),
-                          ],
-                        ).spaceSymmetrically(horizontal: 30)
-                      ],
-                    ),
+                              child: Text(
+                                "Next",
+                                style: const TextStyle().bodyLarge.makeWhite,
+                              )),
+                        ],
+                      ).spaceTo(left: 30, right: 30, top: 35.h)
+                    ],
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

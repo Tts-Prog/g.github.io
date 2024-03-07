@@ -445,14 +445,14 @@ class ViewUtil {
   static Widget eventTags({required String category, required Color tagColor}) {
     return FittedBox(
       child: ViewUtil.customOutlineContainer(
-        backgroundColor: const Color(0xbb000000),
+        //backgroundColor: const Color(0xbb000000),
         borderColor: Colors.transparent,
         borderRadius: 12,
         height: 40,
         child: Container(
           height: 40,
           decoration: BoxDecoration(
-              color: tagColor.withOpacity(1),
+              color: tagColor.withOpacity(0.9),
               borderRadius: BorderRadius.circular(12)),
           child: Center(
             child: Text(
