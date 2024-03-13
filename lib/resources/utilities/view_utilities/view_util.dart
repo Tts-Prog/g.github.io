@@ -71,7 +71,7 @@ class ViewUtil {
   }
 
   static Widget onboardingButton(
-      {required String buttonText, required VoidCallback onPressed}) {
+      {required String buttonText, required void Function()? onPressed}) {
     return ElevatedButton(
       onPressed: onPressed,
       child: Row(

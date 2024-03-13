@@ -7,6 +7,7 @@ import '../../resources/api/api_client.dart';
 import '../../resources/api/api_response.dart';
 import '../../resources/api/api_route.dart';
 import '../../resources/base_view_model/base_view_model.dart';
+import '../../resources/models/all_events_response.dart';
 import '../../resources/models/get_user_info_response.dart';
 import '../../resources/models/validate_user_response.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
@@ -17,24 +18,47 @@ class PasswordResetViewModel extends BaseViewModel {
   String title = "Template Title";
   late BuildContext context;
   final APIClient _apiService = locator<APIClient>();
-  UserProfileInfo? userProfileInfo;
+  //UserProfileInfo? userProfileInfo;
   TextEditingController emailController = TextEditingController();
+  FocusNode emailNode = FocusNode();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  FocusNode passwordNode = FocusNode();
   TextEditingController confirmPwordController = TextEditingController();
+  FocusNode confirmPwordNode = FocusNode();
+  final emailFormKey = GlobalKey<FormState>();
+
+  final passwordResetFormKey = GlobalKey<FormState>();
+  bool isEmailButtonEnabled = false;
+  bool isPwordResetButtonEnabled = false;
 
   String email = "";
   String name = "";
   String password = "";
+  List<EventInstance> events = [];
+
+  List<Category> categories = [];
+  // List<Category> eventCategories = [];
+
+  UserProfileInfo? userDetails;
+  AllEventsResponse? allEventsResponse;
 
   //final _authService = locator<AuthenticationService>();
 
-  final _authService = locator<AuthenticationService>();
+  // final _authService = locator<AuthenticationService>();
 
   String id = "";
 
-  init(BuildContext context) {
+  init(BuildContext context, String emailIn, String idIn) {
     this.context = context;
+    getUserProfileInfo(emailIn, id);
+    email = emailIn;
+    id = idIn;
+  }
+
+  init2(BuildContext context, String emailin) {
+    this.context = context;
+    getUserProfileInfo(emailin, id);
   }
 
   checkEmail() async {
@@ -58,14 +82,14 @@ mutation {
       setBusy(false);
       ViewUtil.showSnackBar(context, "Email is not registered");
     } else if (response.response.data!.forgotPassword == true) {
-      setBusy(true);
-      getUserInfo();
-      setBusy(false);
+      // setBusy(true);
+      //  setBusy(false);
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => PasswordReset(
-                // email: email,
+                  email: email,
+                  id: userDetails!.getUser!.id!,
                 )),
       );
     } else {
@@ -74,17 +98,61 @@ mutation {
     }
   }
 
-  getUserInfo() async {
+  getUserProfileInfo(String email, String id) async {
     setBusy(true);
-    await _authService.getUserProfileInfo(email);
-    setBusy(true);
-    userProfileInfo = _authService.userProfileInfo;
-    setBusy(false);
+    String queryUserProfileInfo = """mutation {
+  getUser(email: "$email") {
+    updatedAt  password  name  image  id email  createdAt
+    events {
+    latitude  longitude
+      artists {
+        artist {
+          biography  createdAt  id  image  name  nationality  roles  updatedAt
+        }
+        role
+      }
+      category {
+        color  createdAt  id name  updatedAt
+      }
+      createdAt  description  duration  id  image  location  start_time  subtitle  title  updatedAt  category_id
+      users {
+        createdAt  email  id  image  name  password  updatedAt
+      }
+      isSaved {
+        createdAt  event_id  id  updatedAt  user_id
+      }
+    }
+  }
+}""";
+    var profileResponse = await _apiService.request(
+        header: {
+          "user_id": "${id}",
+          // 'accept': 'application/json',
+          'content-type': 'application/json'
+        },
+        route: ApiRoute(ApiType.fetchUserInfo),
+        data: {"query": queryUserProfileInfo},
+        create: () =>
+            APIResponse<UserProfileInfo>(create: () => UserProfileInfo()));
+
+    if (profileResponse.response.errorMessage != null &&
+        profileResponse.response.data == null) {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Event Not Found");
+    } else if (profileResponse.response.data != null) {
+      setBusy(false);
+      userDetails = profileResponse.response.data;
+      events = profileResponse.response.data!.getUser!.events!;
+    } else {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Error");
+    }
   }
 
   changePassword() async {
+    setBusy(true);
     password = passwordController.text.trim();
-    String changePasswordId = _authService.userProfileInfo!.getUser!.id!;
+    String changePasswordId = id;
 
     String query = """
 mutation {
@@ -106,8 +174,10 @@ mutation {
             create: () => CharactersResponse()));
 
     if (response.response.errorMessage != null) {
+      setBusy(false);
       ViewUtil.showSnackBar(context, response.response.errorMessage);
     } else if (response.response.data != null) {
+      setBusy(false);
       Navigator.push(
         context,
         MaterialPageRoute(

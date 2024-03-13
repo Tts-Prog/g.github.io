@@ -10,6 +10,7 @@ import 'package:ame/resources/utilities/textfields/custom_text_fields.dart';
 import 'package:ame/resources/utilities/textfields/password_form_field.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 
+import '../../resources/utilities/validation_util.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import 'sign_up_view_model.dart';
 
@@ -37,13 +38,18 @@ class _SignUpState extends State<SignUp> {
       builder: (context, _, __) => DefaultScaffold(
           //  showAppBarBackButton:false ,
           busy: model.busy,
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Form(
-                  key: model.contactFormKey,
-                  child: Column(
+          body: Form(
+            key: model.contactFormKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: () => setState(() {
+              model.isButtonEnabled =
+                  model.contactFormKey.currentState!.validate();
+            }),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
@@ -54,16 +60,22 @@ class _SignUpState extends State<SignUp> {
                       ),
                       CustomInputFields(
                         iconPresent: true,
+                        node: model.nameNode,
                         controller: model.nameController,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.text,
                         prefix: Image.asset(
                           AppAssets.profileTextFdIcon,
                           scale: 4.0,
                           height: 12,
                         ),
                         labelText: "Full name",
+                        validate: (value) => model.nameNode.hasFocus
+                            ? ValidationUtil.validateFullName(value)
+                            : null,
                       ).spaceTo(bottom: 20.h),
                       CustomInputFields(
+                        node: model.emailNode,
+                        readOnly: true,
                         iconPresent: true,
                         controller: model.emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -72,19 +84,35 @@ class _SignUpState extends State<SignUp> {
                         labelText: "abc@email.com",
                       ).spaceTo(bottom: 20.h),
                       PasswordTextField(
+                        node: model.passwordNode,
                         keyboardType: TextInputType.text,
                         hintText: "Your Password",
+                        labelText: "Enter Password",
                         controller: model.passwordController,
+                        validate: (value) => model.passwordNode.hasFocus
+                            ? ValidationUtil.validatePassword(value)
+                            : null,
                       ).spaceTo(bottom: 20.h),
                       PasswordTextField(
+                        node: model.confirmPwordNode,
                         keyboardType: TextInputType.text,
-                        hintText: "Your Password",
+                        hintText: "Confirm Password",
+                        labelText: "Confirm Password",
                         controller: model.confirmPwordController,
+                        validate: (value) => model.confirmPwordNode.hasFocus
+                            ? ValidationUtil.validateConfirmPasword(
+                                value, model.passwordController.text)
+                            : null,
                       ).spaceTo(bottom: 20.h),
                       ElevatedButton(
-                              onPressed: () async {
-                                model.createUser();
-                              },
+                              onPressed: !model.isButtonEnabled ||
+                                      model.nameController.text.isEmpty ||
+                                      model.passwordController.text.isEmpty ||
+                                      model.confirmPwordController.text.isEmpty
+                                  ? null
+                                  : () => () async {
+                                        model.createUser();
+                                      },
                               child: const Text("SIGN UP"))
                           .spaceTo(bottom: 30.h),
                       const Text(
@@ -99,10 +127,10 @@ class _SignUpState extends State<SignUp> {
                           buttonText: "Log in with Google"),
                     ],
                   ).spaceSymmetrically(horizontal: 16, vertical: 24),
-                ),
-                ViewUtil.bonakoTrademark().spaceTo(top: 80.h)
-              ],
-            ).spaceTo(bottom: 24),
+                  ViewUtil.bonakoTrademark().spaceTo(top: 80.h)
+                ],
+              ).spaceTo(bottom: 24),
+            ),
           )),
     );
   }

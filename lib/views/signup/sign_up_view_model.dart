@@ -17,9 +17,14 @@ class SignUpViewModel extends BaseViewModel {
   String title = "Sign Up";
   late BuildContext context;
   TextEditingController emailController = TextEditingController();
+  FocusNode emailNode = FocusNode();
   TextEditingController nameController = TextEditingController();
+  FocusNode nameNode = FocusNode();
   TextEditingController passwordController = TextEditingController();
+  FocusNode passwordNode = FocusNode();
   TextEditingController confirmPwordController = TextEditingController();
+  FocusNode confirmPwordNode = FocusNode();
+
   final APIClient _apiService = locator<APIClient>();
   String email = "";
   String name = "";
