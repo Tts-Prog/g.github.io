@@ -72,7 +72,9 @@ class _SignInState extends State<SignIn> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PasswordEmail()),
+                            builder: (context) => PasswordEmail(
+                                  email: widget.email,
+                                )),
                       );
                     },
                     child: Text(

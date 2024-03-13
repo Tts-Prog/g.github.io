@@ -21,12 +21,12 @@ class EventsMapViewModel extends BaseViewModel {
   AllEventsResponse? allEventsResponse;
   EventInstance? eventInstance;
   init(BuildContext context, String id) {
-    setBusy(true);
+    //setBusy(true);
     this.context = context;
     getEvents(id);
     // setDefaultEvent(events[0]);
 
-    setBusy(false);
+    // setBusy(false);
   }
 
   // void setDefaultEvent(EventInstance event) {

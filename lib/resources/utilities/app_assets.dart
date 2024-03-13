@@ -4,7 +4,7 @@ class AppAssets {
   //images
   static const String eventPlaceholder = "assets/images/eventpic.png";
   static const String eventBackground = "assets/images/event_bg.png";
-
+  static const String homeHolder = "assets/images/homeholder.png";
   static const String artistHold = "assets/images/artist_holder.png";
   //logos
   static const String ameLogo = "assets/logos/logo_ame.png";
@@ -24,4 +24,5 @@ class AppAssets {
   static const String profileNavBar = "assets/icons/Profilebar.png";
   static const String exploreIcon = "assets/icons/compass.png";
   static const String locationNavBar = "assets/icons/locationbar.png";
+  static const String mapMarker = "assets/icons/bubble.png";
 }

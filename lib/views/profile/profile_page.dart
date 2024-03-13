@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../resources/models/all_events_response.dart';
-import '../../resources/utilities/textfields/borderless_fields.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
-import '../search_page/search_page.dart';
 import 'profile_page_view_model.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -185,6 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             int.parse(category.color!.replaceAll("#", "0x66")))
                         : Colors.transparent,
                     width: 24,
+                    borderRadius: 8,
                     height: 5,
                     child: const SizedBox())
                 .spaceTo(top: 5)
@@ -210,6 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         : Colors.transparent,
                     width: 24,
                     height: 5,
+                    borderRadius: 8,
                     child: const SizedBox())
                 .spaceTo(top: 5)
           ],

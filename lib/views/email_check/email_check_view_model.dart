@@ -19,9 +19,12 @@ class EmailCheckViewModel extends BaseViewModel {
   String title = "Template Title";
   late BuildContext context;
   TextEditingController emailController = TextEditingController();
+  FocusNode emailNode = FocusNode();
   String email = "";
+  final emailFormKey = GlobalKey<FormState>();
   final APIClient _apiService = locator<APIClient>();
   UserProfileInfo? userProfileInfo;
+  bool isButtonEnabled = false;
 
   final _authService = locator<AuthenticationService>();
 

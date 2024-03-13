@@ -87,6 +87,13 @@ ThemeData lightTheme() {
       //   borderRadius: BorderRadius.circular(8),
       //   borderSide: const BorderSide(width: 1, color: AppColors.red400),
       // ),
+      errorStyle: TextStyle(
+        fontSize: 12,
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.red),
+      ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide:
