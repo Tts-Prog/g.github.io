@@ -68,8 +68,8 @@ class _EventsMapState extends State<EventsMap> {
                   center: LatLng(14.9189, -23.5087), // Default map center
                   zoom: 15.0,
                 ),
-                layers: [
-                  TileLayerOptions(
+                children: [
+                  TileLayer(
                       urlTemplate:
                           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                       subdomains: [
@@ -77,17 +77,27 @@ class _EventsMapState extends State<EventsMap> {
                         'b',
                         'c',
                       ]),
-                  MarkerLayerOptions(
+                  MarkerLayer(
                     markers: model.events
                         .map((event) => Marker(
                               width: 80.0,
                               height: 80.0,
                               point: LatLng(event.latitude!, event.longitude!),
-                              builder: (ctx) =>
-                                  buildEventMapTag(event, selectedId),
+                              child: buildEventMapTag(event, selectedId),
                             ))
                         .toList(),
                   ),
+                  // MarkerLayerOptions(
+                  //   markers: model.events
+                  //       .map((event) => Marker(
+                  //             width: 80.0,
+                  //             height: 80.0,
+                  //             point: LatLng(event.latitude!, event.longitude!),
+                  //             builder: (ctx) =>
+                  //                 buildEventMapTag(event, selectedId),
+                  //           ))
+                  //       .toList(),
+                  // ),
                 ],
               ),
               Positioned(
