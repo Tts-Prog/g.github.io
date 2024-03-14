@@ -25,12 +25,12 @@ class ExploreViewModel extends BaseViewModel {
   String email = "";
 
   init(BuildContext context, String id) {
-    setBusy(true);
+    // setBusy(true);
 
     this.context = context;
 
     getEvents(id);
-    setBusy(false);
+    //  setBusy(false);
   }
 
   getEvents(String id) async {

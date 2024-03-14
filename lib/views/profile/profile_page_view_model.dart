@@ -8,8 +8,6 @@ import '../../resources/api/api_response.dart';
 import '../../resources/api/api_route.dart';
 import '../../resources/base_view_model/base_view_model.dart';
 import '../../resources/models/event_removal_response.dart';
-import '../../resources/models/validate_user_response.dart';
-import '../../services/authentication_service.dart';
 import '../../singleton/locator.dart';
 
 class ProfilePageViewModel extends BaseViewModel {
@@ -27,14 +25,15 @@ class ProfilePageViewModel extends BaseViewModel {
   UserProfileInfo? userDetails;
   AllEventsResponse? allEventsResponse;
   init(BuildContext context, String email, String id) {
-    setBusy(true);
+    // setBusy(true);
     this.context = context;
     // _authService
     //     .getUserProfileInfo(_authService.userProfileInfo!.getUser!.email!);
     // userDetails = _authService.userProfileInfo;
     // addCategoriesToList();
     getUserProfileInfo(email, id);
-    setBusy(false);
+    getEvents(id);
+    // setBusy(false);
     // eventCategories = _authService.allEventsResponse!.categories!;
   }
 

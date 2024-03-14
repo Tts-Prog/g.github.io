@@ -256,6 +256,7 @@ class _ExploreState extends State<Explore> {
                 tagColor:
                     Color(int.parse(category!.color!.replaceAll("#", "0x66")))),
             ViewUtil.customOutlineContainer(
+                    borderRadius: 8,
                     backgroundColor: selectedId == id
                         ? Color(
                             int.parse(category.color!.replaceAll("#", "0x66")))
@@ -286,6 +287,7 @@ class _ExploreState extends State<Explore> {
                         : Colors.transparent,
                     width: 24,
                     height: 5,
+                    borderRadius: 8,
                     child: const SizedBox())
                 .spaceTo(top: 5)
           ],

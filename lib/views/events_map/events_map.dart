@@ -1,5 +1,7 @@
 import 'package:ame/resources/size_utilities/size_fitter.dart';
+import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
+import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -66,8 +68,8 @@ class _EventsMapState extends State<EventsMap> {
                   center: LatLng(14.9189, -23.5087), // Default map center
                   zoom: 15.0,
                 ),
-                layers: [
-                  TileLayerOptions(
+                children: [
+                  TileLayer(
                       urlTemplate:
                           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                       subdomains: [
@@ -75,17 +77,27 @@ class _EventsMapState extends State<EventsMap> {
                         'b',
                         'c',
                       ]),
-                  MarkerLayerOptions(
+                  MarkerLayer(
                     markers: model.events
                         .map((event) => Marker(
-                              width: 30.0,
-                              height: 30.0,
+                              width: 80.0,
+                              height: 80.0,
                               point: LatLng(event.latitude!, event.longitude!),
-                              builder: (ctx) =>
-                                  buildEventMapTag(event, selectedId),
+                              child: buildEventMapTag(event, selectedId),
                             ))
                         .toList(),
                   ),
+                  // MarkerLayerOptions(
+                  //   markers: model.events
+                  //       .map((event) => Marker(
+                  //             width: 80.0,
+                  //             height: 80.0,
+                  //             point: LatLng(event.latitude!, event.longitude!),
+                  //             builder: (ctx) =>
+                  //                 buildEventMapTag(event, selectedId),
+                  //           ))
+                  //       .toList(),
+                  // ),
                 ],
               ),
               Positioned(
@@ -120,9 +132,10 @@ class _EventsMapState extends State<EventsMap> {
                           return TextField(
                             controller: textEditingController,
                             focusNode: focusNode,
-                            decoration: InputDecoration(
-                              labelText: 'Find An Event',
-                            ),
+                            decoration: const InputDecoration(
+                                labelText: 'Find An Event',
+                                labelStyle: TextStyle(
+                                    color: AppColors.typographySubColor)),
                           );
                         },
                         displayStringForOption: (obj) => obj.title!,
@@ -140,7 +153,7 @@ class _EventsMapState extends State<EventsMap> {
                                     backgroundColor: Colors.white,
                                     child: Text(
                                       options.toList()[ind].title ?? "",
-                                      style: TextStyle().bodyMedium,
+                                      style: const TextStyle().bodyMedium,
                                     ).spaceSymmetrically(
                                         horizontal: 12, vertical: 12),
                                   ).spaceTo(bottom: 6, right: 50),
@@ -185,28 +198,45 @@ class _EventsMapState extends State<EventsMap> {
       return const SizedBox.shrink();
     }
 
-    return GestureDetector(
-      onTap: () {
-        // Perform action when marker is tapped
-        setState(() {
-          eventInstance = event;
-          showEventContainer = true;
-        });
-        print('Marker tapped at ${event.location}');
-      },
-      child: ViewUtil.customOutlineContainer(
-        backgroundColor: const Color(0xbb000000),
-        borderColor: Colors.transparent,
-        borderRadius: 12,
-        child: ViewUtil.customOutlineContainer(
-            borderRadius: 6,
-            height: 5,
-            width: 5,
-            alignment: Alignment.center,
-            backgroundColor:
-                Color(int.parse(event.category!.color!.replaceAll("#", "0x66")))
-                    .withOpacity(1),
-            child: Text(model.events.indexOf(event).toString())),
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: Stack(
+        children: [
+          Image.asset(
+            AppAssets.mapMarker,
+            height: 100,
+            width: 120,
+            scale: 4,
+          ),
+          Positioned(
+            left: 016,
+            right: 35,
+            top: 9,
+            child: GestureDetector(
+              onTap: () {
+                // Perform action when marker is tapped
+                setState(() {
+                  eventInstance = event;
+                  showEventContainer = true;
+                });
+                print('Marker tapped at ${event.location}');
+              },
+              child: ViewUtil.customOutlineContainer(
+                  borderRadius: 6,
+                  height: 30,
+                  width: 20,
+                  alignment: Alignment.center,
+                  backgroundColor: Color(int.parse(
+                          event.category!.color!.replaceAll("#", "0x66")))
+                      .withOpacity(1),
+                  child: Text(
+                    model.events.indexOf(event).toString(),
+                    style: const TextStyle(color: Colors.white),
+                  )),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -229,6 +259,7 @@ class _EventsMapState extends State<EventsMap> {
                         : Colors.transparent,
                     width: 24,
                     height: 5,
+                    borderRadius: 8,
                     child: const SizedBox())
                 .spaceTo(top: 5)
           ],
@@ -256,6 +287,7 @@ class _EventsMapState extends State<EventsMap> {
                         : Colors.transparent,
                     width: 24,
                     height: 5,
+                    borderRadius: 8,
                     child: const SizedBox())
                 .spaceTo(top: 5)
           ],
@@ -285,7 +317,7 @@ class _EventsMapState extends State<EventsMap> {
                   showEventContainer = false;
                 });
               },
-              child: Icon(
+              child: const Icon(
                 Icons.close,
                 size: 20,
               ),

@@ -165,6 +165,7 @@ class _EventsPageState extends State<EventsPage> {
           MaterialPageRoute(
               builder: (context) => ArtistPage(
                     artist: artist!,
+                    eventInstance: widget.eventInstance,
                   )),
         );
       },
@@ -215,16 +216,16 @@ class _EventsPageState extends State<EventsPage> {
           // width: 295.w,
           // gradient: const LinearGradient(
           //     colors: [Color(0x33000000), Color(0xCC29E6DC)])
-          backgroundColor: const Color(0xCC000000),
+          backgroundColor: Colors.transparent,
         ),
         ViewUtil.customOutlineContainer(
-          isShadowPresent: true,
-          shadow: const BoxShadow(
-            color: Color(0x6650ADE8),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-            spreadRadius: 0,
-          ),
+          isShadowPresent: false,
+          // shadow: const BoxShadow(
+          //   color: Color(0x6650ADE8),
+          //   //   blurRadius: 10,
+          //   offset: Offset(0, 4),
+          //   spreadRadius: 0,
+          // ),
           child: SizedBox(
             child: Row(
               children: [
@@ -296,8 +297,9 @@ class _EventsPageState extends State<EventsPage> {
 
           // gradient: const LinearGradient(
           //     colors: [Color(0x33000000), Color(0xCC29E6DC)])
-          backgroundColor: Color(int.parse(
-              widget.eventInstance.category!.color!.replaceAll("#", "0x66"))),
+          backgroundColor: Color(int.parse(widget.eventInstance.category!.color!
+                  .replaceAll("#", "0x66")))
+              .withOpacity(0.8),
         ),
       ],
     );

@@ -103,6 +103,7 @@ class _CustomInputfieldsFieldState extends State<CustomInputFields> {
           fontWeight: FontWeight.bold,
           color: Color(0xffEBE8E8),
         ),
+        //  errorStyle: TextStyle(color: Colors.red),
         // contentPadding: EdgeInsets.all(10),
         prefixIcon: widget.iconPresent ? prefixIcon : null,
         labelText: widget.labelText,

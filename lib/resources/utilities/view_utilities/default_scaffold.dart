@@ -2,6 +2,7 @@ import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/utilities/view_utilities/constants.dart';
+import 'package:ame/resources/utilities/view_utilities/loading_overlay.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +68,7 @@ class DefaultScaffold extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: body,
         ),
-        Center(child: const CircularProgressIndicator().hideIf(!busy))
+        LoadingOverlay().hideIf(!busy)
       ],
     );
   }
