@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
@@ -189,13 +191,18 @@ class ViewUtil {
         child: ViewUtil.imageAsset4Scale(asset: AppAssets.shareIcon));
   }
 
-  static Widget bookmarkBlock() {
-    return ViewUtil.customOutlineContainer(
-        height: 36,
-        width: 36,
-        borderRadius: 7,
-        backgroundColor: Colors.black.withOpacity(0.5),
-        child: ViewUtil.imageAsset4Scale(asset: AppAssets.bookmarkIcon));
+  static Widget bookmarkBlock({VoidCallback? onTap, required bool isSaved}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ViewUtil.customOutlineContainer(
+          height: 36,
+          width: 36,
+          borderRadius: 7,
+          backgroundColor: Colors.black.withOpacity(0.5),
+          child: ViewUtil.imageAsset4Scale(
+              asset:
+                  isSaved ? AppAssets.bookmarkIcon : AppAssets.unBookmarkIcon)),
+    );
   }
 
   static Widget topFrame(
@@ -223,8 +230,8 @@ class ViewUtil {
     );
   }
 
-  static Widget searchEventContainer(
-      EventInstance eventInstance, BuildContext context, VoidCallback onTap) {
+  static Widget searchEventContainer(EventInstance eventInstance, String userID,
+      BuildContext context, VoidCallback onBookmarkTap) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -232,6 +239,7 @@ class ViewUtil {
           MaterialPageRoute(
               builder: (context) => EventsPage(
                     eventInstance: eventInstance,
+                    id: userID,
                   )),
         );
       },
@@ -240,30 +248,31 @@ class ViewUtil {
             borderWidth: 0,
             borderColor: Colors.transparent,
             backgroundColor: Colors.white,
-            height: 127.h,
+            // height: 127.h,
             width: 335.w,
             borderRadius: 12,
             isShadowPresent: true,
-            alignment: Alignment.center,
+            //alignment: Alignment.center,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                      eventInstance.image!,
-                                    ),
-                                    fit: BoxFit.fitHeight)),
-                            height: 114.h,
-                            width: 90.w,
-                            child: const SizedBox())
-                        .spaceTo(left: 4, right: 8),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                  eventInstance.image!,
+                                ),
+                                fit: BoxFit.cover)),
+                        height: 114.h,
+                        width: 90.w,
+                        child: const SizedBox())
+                    .spaceTo(left: 4, right: 8, top: 6, bottom: 6),
+                SizedBox(
+                  height: 114.h,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -271,7 +280,8 @@ class ViewUtil {
                               .moveIntoNewLinesAfter(20)
                               .truncateWithEllipses(53),
                           style: const TextStyle().bodyMedium,
-                        ).spaceTo(top: 4),
+                        ).spaceTo(bottom: 16),
+
                         Row(
                           children: [
                             Text(
@@ -284,35 +294,51 @@ class ViewUtil {
                             Text(
                               "${eventInstance.startTime?.toFormattedTime()} - ${eventInstance.startTime?.addMinutes(eventInstance.duration!).toFormattedTime()}",
                               style: const TextStyle().displaySmall,
-                            )
+                            ),
                           ],
-                        ).spaceTo(bottom: 12)
+                        ),
+                        //Spacer(),
+                        // Expanded(
+                        //   child: SizedBox(
+                        //       //  height: 5,
+                        //       ),
+                        // )
                       ],
                     ),
-                  ],
+                  ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: onTap, child: ViewUtil.bookmarkBlock()),
-                    ViewUtil.shareBlock()
-                  ],
-                ).spaceTo(top: 8, bottom: 12, right: 8)
+                Spacer(),
+                SizedBox(
+                  height: 114.h,
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ViewUtil.bookmarkBlock(
+                                onTap: onBookmarkTap,
+                                isSaved: eventInstance.isSaved != null)
+                            .spaceTo(bottom: 16),
+                        ViewUtil.shareBlock()
+                      ],
+                    ),
+                  ),
+                ).spaceTo(right: 8)
               ],
             )).spaceAllAroundBy(4),
       ),
     );
   }
 
-  static Widget eventContainer(
-      EventInstance eventInstance, BuildContext context, VoidCallback onTap) {
+  static Widget eventContainer(String userID, EventInstance eventInstance,
+      BuildContext context, VoidCallback onBookmarkTap) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => EventsPage(
+                    id: userID,
                     eventInstance: eventInstance,
                   )),
         );
@@ -377,8 +403,9 @@ class ViewUtil {
                   Row(
                     children: [
                       ViewUtil.shareBlock().spaceTo(right: 20),
-                      GestureDetector(
-                          onTap: onTap, child: ViewUtil.bookmarkBlock())
+                      ViewUtil.bookmarkBlock(
+                          onTap: onBookmarkTap,
+                          isSaved: eventInstance.isSaved != null)
                     ],
                   )
                 ],

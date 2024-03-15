@@ -6,6 +6,7 @@ class AppAssets {
   static const String eventBackground = "assets/images/event_bg.png";
   static const String homeHolder = "assets/images/homeholder.png";
   static const String artistHold = "assets/images/artist_holder.png";
+  static const String bgHomeHolder = "assets/images/under_image.png";
   //logos
   static const String ameLogo = "assets/logos/logo_ame.png";
   static const String googleLogo = "assets/logos/logo_google.png";
@@ -16,6 +17,7 @@ class AppAssets {
   static const String profileTextFdIcon = "assets/icons/Profile.png";
   static const String profileText2FdIcon = "assets/icons/Profile2.png";
   static const String bookmarkIcon = "assets/icons/Bookmark.png";
+  static const String unBookmarkIcon = "assets/icons/bookmarkun.png";
   static const String shareIcon = "assets/icons/telegram.png";
   static const String searchIcon = "assets/icons/search.png";
   static const String calendarIcon = "assets/icons/Calendar.png";
@@ -25,4 +27,5 @@ class AppAssets {
   static const String exploreIcon = "assets/icons/compass.png";
   static const String locationNavBar = "assets/icons/locationbar.png";
   static const String mapMarker = "assets/icons/bubble.png";
+  static const String mapBlackMarker = "assets/icons/black_bubble.png";
 }

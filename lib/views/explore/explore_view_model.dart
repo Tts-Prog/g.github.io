@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../resources/api/api_client.dart';
 import '../../resources/api/api_route.dart';
 import '../../resources/base_view_model/base_view_model.dart';
+import '../../resources/models/event_removal_response.dart';
 import '../../resources/models/get_user_info_response.dart';
 import '../../resources/utilities/view_utilities/view_util.dart';
 import '../../singleton/locator.dart';
@@ -23,6 +24,14 @@ class ExploreViewModel extends BaseViewModel {
   String userIdent = "";
   UserProfileInfo? userProfileInfo;
   String email = "";
+  FocusNode searchNode = FocusNode();
+  bool searchPrefixShow() {
+    return !searchNode.hasFocus;
+  }
+
+  init2(BuildContext context) {
+    this.context = context;
+  }
 
   init(BuildContext context, String id) {
     // setBusy(true);
@@ -148,6 +157,40 @@ class ExploreViewModel extends BaseViewModel {
     } else {
       setBusy(false);
       ViewUtil.showSnackBar(context, "Saved Already");
+    }
+  }
+
+  removeSavedEvent(EventInstance eventInstance, String id) async {
+    String removeSavedEventId = eventInstance.isSaved!.id!;
+    String query = """
+mutation RemoveSavedEvent {
+  removeSavedEvent(id: "$removeSavedEventId")
+}
+""";
+
+    var response = await _apiService.request(
+        header: {
+          "user_id": "$id",
+          // 'accept': 'application/json',
+          'content-type': 'application/json'
+        },
+        route: ApiRoute(
+          ApiType.removeSavedEvent,
+        ),
+        data: {"query": query},
+        create: () => APIResponse<EventRemovalResponse>(
+            create: () => EventRemovalResponse()));
+
+    if (response.response.data!.removeSavedEvent == false) {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Event Not Found");
+    } else if (response.response.data!.removeSavedEvent == true) {
+      setBusy(false);
+      events.remove(eventInstance);
+      ViewUtil.showSnackBar(context, "Event removed");
+    } else {
+      ViewUtil.showSnackBar(context, response.response.errorMessage);
+      setBusy(false);
     }
   }
 

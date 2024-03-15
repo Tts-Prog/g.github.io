@@ -6,6 +6,12 @@ class SearchPageViewModel extends BaseViewModel {
   String title = "Template Title";
   late BuildContext context;
 
+  FocusNode searchNode = FocusNode();
+
+  bool searchPrefixShow() {
+    return !searchNode.hasFocus;
+  }
+
   init(BuildContext context) {
     this.context = context;
   }
