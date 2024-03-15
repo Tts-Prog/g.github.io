@@ -224,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance, context, () {
+    return ViewUtil.eventContainer(widget.id, eventInstance, context, () {
       model.removeSavedEvent(eventInstance, widget.id);
     });
   }

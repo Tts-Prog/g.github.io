@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ame/resources/models/all_events_response.dart';
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
@@ -11,11 +13,16 @@ import '../../resources/utilities/view_utilities/view_util.dart';
 import 'artist_page_view_model.dart';
 
 class ArtistPage extends StatefulWidget {
-  ArtistPage({Key? key, required this.artist, required this.eventInstance})
+  ArtistPage(
+      {Key? key,
+      required this.artist,
+      required this.eventInstance,
+      required this.id})
       : super(key: key);
   static String routeName = "/insurance";
   Artist artist;
   EventInstance eventInstance;
+  String id;
 
   @override
   State<ArtistPage> createState() => _ArtistPageState();
@@ -40,14 +47,15 @@ class _ArtistPageState extends State<ArtistPage> {
           topHeadFrame: ViewUtil.topFrame(
               rawHeight: 299,
               backGroundWidget: Container(
-                height: 218.h.addSafeAreaHeight,
+                height: Platform.isIOS ? 218.h + 30 : 218.h.addSafeAreaHeight,
                 color: Colors.white,
                 child: ViewUtil.imageBackgroundContainer(
                     child: const SizedBox(
                       width: double.infinity,
                     ),
                     isNetWorkImage: true,
-                    height: 218.h.addSafeAreaHeight,
+                    height:
+                        Platform.isIOS ? 218.h + 30 : 218.h.addSafeAreaHeight,
                     background: widget.artist.image!),
               )),
           body: Column(
@@ -77,8 +85,7 @@ class _ArtistPageState extends State<ArtistPage> {
                           ),
                         ],
                       ),
-                      ViewUtil.imageAsset4Scale(asset: AppAssets.notifIcon)
-                          .spaceTo(right: 16),
+                      Spacer()
                     ],
                   ).spaceTo(top: 12),
                 ),
@@ -99,11 +106,11 @@ class _ArtistPageState extends State<ArtistPage> {
                               Text(
                                 widget.artist.name!,
                                 style: const TextStyle().headlineMedium,
-                              ).spaceTo(top: 20),
+                              ).spaceTo(top: 32),
                               Text(
                                 widget.artist.nationality!,
                                 style: const TextStyle().bodyMedium,
-                              ).spaceTo(bottom: 30),
+                              ).spaceTo(bottom: 32),
                             ],
                           ),
                           widget.artist.roles.toTextListWidget()
@@ -113,12 +120,19 @@ class _ArtistPageState extends State<ArtistPage> {
                       Text(
                         "Biography",
                         style: const TextStyle().titleSmall,
-                      ).spaceTo(bottom: 30),
-                      Text(widget.artist.biography!).spaceTo(bottom: 20),
+                      ).spaceTo(bottom: 16),
+                      Text(
+                        widget.artist.biography!,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w400),
+                      ).spaceTo(bottom: 32),
                       ...List.generate(
                           model.artistEventList.length,
                           (index) => ViewUtil.searchEventContainer(
-                                  model.artistEventList[index], context, () {})
+                                  model.artistEventList[index],
+                                  widget.id,
+                                  context,
+                                  () {})
                               .spaceTo(bottom: 8)),
 
                       //   ViewUtil.searchEventContainer()
@@ -174,7 +188,7 @@ class _ArtistPageState extends State<ArtistPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ViewUtil.shareBlock().spaceTo(right: 8.w),
-                      ViewUtil.bookmarkBlock()
+                      ViewUtil.bookmarkBlock(isSaved: true)
                     ],
                   ).spaceTo(right: 12),
                 ),

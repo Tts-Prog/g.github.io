@@ -33,10 +33,8 @@ class _EmailCheckState extends State<EmailCheck> {
         this.model = model;
         model.init(context);
       },
-      builder: (context, _, __) => WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+      builder: (context, _, __) => PopScope(
+        canPop: false,
         child: DefaultScaffold(
             busy: model.busy,
             showAppBarBackButton: false,

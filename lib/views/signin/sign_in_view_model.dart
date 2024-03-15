@@ -57,11 +57,12 @@ class SignInViewModel extends BaseViewModel {
       Navigator.push(
         context,
         MaterialPageRoute(
+            fullscreenDialog: true,
             builder: (context) => Home(
                   email: email,
                   id: response.response.data!.login!.id!,
                 )),
-      );
+      ).then((value) => false);
     } else if (response.response.errorMessage != null) {
       setBusy(false);
       ViewUtil.showSnackBar(context, response.response.errorMessage);

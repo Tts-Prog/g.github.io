@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/app_colors.dart';
 import 'package:ame/resources/theme_utilities/lightTheme.dart';
@@ -11,11 +13,14 @@ import 'package:stacked/stacked.dart';
 
 import '../../resources/models/all_events_response.dart';
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
+import '../explore/explore_view_model.dart';
 import 'events_view_model.dart';
 
 class EventsPage extends StatefulWidget {
-  EventsPage({Key? key, required this.eventInstance}) : super(key: key);
+  EventsPage({Key? key, required this.eventInstance, required this.id})
+      : super(key: key);
   EventInstance eventInstance;
+  String id;
 
   static String routeName = "/insurance";
 
@@ -24,15 +29,15 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> {
-  late EventsPageViewModel model;
+  late ExploreViewModel model;
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<EventsPageViewModel>.reactive(
-      viewModelBuilder: () => EventsPageViewModel(),
+    return ViewModelBuilder<ExploreViewModel>.reactive(
+      viewModelBuilder: () => ExploreViewModel(),
       onViewModelReady: (model) {
         this.model = model;
-        model.init(context);
+        model.init2(context);
       },
       builder: (context, _, __) => DefaultScaffold(
           busy: model.busy,
@@ -44,7 +49,7 @@ class _EventsPageState extends State<EventsPage> {
                   child: const SizedBox(
                     width: double.infinity,
                   ),
-                  height: 218.h.addSafeAreaHeight,
+                  height: Platform.isIOS ? 218.h : 218.h.addSafeAreaHeight,
                   isNetWorkImage: true,
                   background: widget.eventInstance.image!)),
           body: Column(
@@ -93,8 +98,7 @@ class _EventsPageState extends State<EventsPage> {
                           ),
                         ],
                       ),
-                      ViewUtil.imageAsset4Scale(asset: AppAssets.notifIcon)
-                          .spaceTo(right: 16),
+                      Spacer()
                     ],
                   ).spaceTo(top: 12),
                 ),
@@ -109,7 +113,7 @@ class _EventsPageState extends State<EventsPage> {
                       Text(
                         widget.eventInstance.title!,
                         style: const TextStyle().headlineMedium,
-                      ).spaceTo(bottom: 30, top: 20),
+                      ).spaceTo(bottom: 16, top: 20),
                       eventInfoTile(
                           "${widget.eventInstance.startTime?.day.toString()} ${widget.eventInstance.startTime!.toMonthString()}, ${widget.eventInstance.startTime?.year.toString()}" ??
                               "",
@@ -121,7 +125,7 @@ class _EventsPageState extends State<EventsPage> {
                       Text(
                         "Artistes",
                         style: const TextStyle().titleSmall,
-                      ).spaceTo(bottom: 10),
+                      ).spaceTo(bottom: 16, top: 16),
                       // Row(
                       //   children: [
                       //     artistTags().spaceTo(right: 20),
@@ -144,10 +148,14 @@ class _EventsPageState extends State<EventsPage> {
                         ),
                       ),
                       Text(
-                        "About Events",
+                        "About Event",
                         style: const TextStyle().titleSmall,
-                      ).spaceTo(bottom: 30),
-                      Text(widget.eventInstance.description ?? "")
+                      ).spaceTo(bottom: 16, top: 8),
+                      Text(
+                        widget.eventInstance.description ?? "",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w400),
+                      )
                     ],
                   ),
                 ),
@@ -165,6 +173,7 @@ class _EventsPageState extends State<EventsPage> {
           MaterialPageRoute(
               builder: (context) => ArtistPage(
                     artist: artist!,
+                    id: widget.id,
                     eventInstance: widget.eventInstance,
                   )),
         );
@@ -284,7 +293,11 @@ class _EventsPageState extends State<EventsPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ViewUtil.shareBlock().spaceTo(right: 8.w),
-                      ViewUtil.bookmarkBlock()
+                      ViewUtil.bookmarkBlock(
+                          isSaved: widget.eventInstance.isSaved != null,
+                          onTap: () async {
+                            model.saveAnEvent(widget.eventInstance, widget.id);
+                          })
                     ],
                   ).spaceTo(right: 12),
                 ),
