@@ -62,7 +62,7 @@ class _ArtistPageState extends State<ArtistPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 269.h,
+                height: Platform.isIOS ? 269.h + 15 : 269.h,
                 width: double.infinity,
                 child: Align(
                   alignment: Alignment.topCenter,

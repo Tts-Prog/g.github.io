@@ -56,7 +56,7 @@ class _EventsPageState extends State<EventsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 188.h,
+                height: Platform.isIOS ? 188.h + 15 : 188.h,
                 width: double.infinity,
                 child: Align(
                   alignment: Alignment.topCenter,
