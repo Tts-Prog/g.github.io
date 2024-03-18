@@ -2,6 +2,7 @@ import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/textfields/borderless_fields.dart';
+import 'package:ame/resources/utilities/translate_xters.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -189,7 +190,8 @@ class _SearchPageState extends State<SearchPage> {
     EventInstance eventInstance,
   ) {
     if (searchText.isNotEmpty &&
-        eventInstance.title!.toLowerCase().contains(searchText.toLowerCase()) ==
+        translateToEnglish(eventInstance.title!.toLowerCase(), accentMap)
+                .contains(searchText.toLowerCase()) ==
             false) {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       print(eventInstance.description);
