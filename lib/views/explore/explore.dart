@@ -29,7 +29,7 @@ class Explore extends StatefulWidget {
 class _ExploreState extends State<Explore> {
   late ExploreViewModel model;
   String selectedId = 'All'; // Track the selected ID
-  int selectedValue = 1;
+  int selectedValue = 0;
   bool hideDropDownMotif = false;
   List dayLimits = ["All days", "1 day", "2 days", "3 days"];
 
@@ -41,53 +41,61 @@ class _ExploreState extends State<Explore> {
         this.model = model;
         model.init(context, widget.id);
       },
-      builder: (context, _, __) => DefaultScaffold(
-          appBarLogoColor: Colors.white,
-          showAppBar: false,
-          isTopFramePresent: true,
-          topHeadFrame: ViewUtil.topFrame(),
-          busy: model.busy,
-          body: Column(
-            children: [
-              SizedBox(
-                height: 159.h.addSafeAreaHeight,
-                child: Column(
-                  children: [
-                    ViewUtil.ameLogo(color: Colors.white, height: 15, width: 57)
-                        .spaceTo(top: 20.addSafeAreaHeight, bottom: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: BorderlessSearchFields(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage(
-                                          eventsList: model.events,
-                                        )),
-                              );
-                            },
-                            iconPresent: true,
-                            hintColor: Colors.white,
-                            keyboardType: TextInputType.emailAddress,
-                            prefix: ViewUtil.imageAsset4Scale(
-                                asset: AppAssets.searchIcon,
-                                color: Colors.white),
+      builder: (context, _, __) => PopScope(
+        canPop: false,
+        // onPopInvoked: (bool value) {
+        //   value = false;
+        //   // return value;
+        // },
+        child: DefaultScaffold(
+            appBarLogoColor: Colors.white,
+            showAppBar: false,
+            isTopFramePresent: true,
+            topHeadFrame: ViewUtil.topFrame(),
+            busy: model.busy,
+            body: Column(
+              children: [
+                SizedBox(
+                  height: 159.h.addSafeAreaHeight,
+                  child: Column(
+                    children: [
+                      ViewUtil.ameLogo(
+                              color: Colors.white, height: 15, width: 57)
+                          .spaceTo(top: 20.addSafeAreaHeight, bottom: 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: BorderlessSearchFields(
+                              node: model.searchNode,
+                              readOnly: true,
+                              showSuffixBusy: !model.searchNode.hasFocus,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchPage(
+                                            eventsList: model.events,
+                                            id: widget.id,
+                                          )),
+                                );
+                              },
+                              iconPresent: true,
+                              hintColor: Colors.white,
+                              keyboardType: TextInputType.emailAddress,
+                              prefix: ViewUtil.imageAsset4Scale(
+                                  asset: AppAssets.searchIcon,
+                                  color: Colors.white),
+                            ),
                           ),
-                        ),
-
-                        Expanded(
-                            child: CustomDropdown<int>(
-                          widget: ViewUtil.customOutlineContainer(
-                            // margin: EdgeInsets.only(bottom: 12.0),
-                            width: 100,
-                            height: 40,
-                            borderRadius: 20,
-                            backgroundColor: const Color(0xFF607D82),
-                            child: Center(
+                          CustomDropdown<int>(
+                            widget: ViewUtil.customOutlineContainer(
+                              // margin: EdgeInsets.only(bottom: 12.0),
+                              width: 100,
+                              height: 40,
+                              borderRadius: 20,
+                              backgroundColor: const Color(0xFF607D82),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -109,135 +117,122 @@ class _ExploreState extends State<Explore> {
                                   ).spaceTo(right: 8)
                                 ],
                               ),
-                            ),
-                          ).spaceTo(bottom: 5),
+                            ).spaceTo(bottom: 5),
 
-                          items: const [0, 1, 2, 3],
-                          //  fieldColor: Colors.transparent,
-                          // onTap: () {
-                          //   setState(() {
-                          //     selectedValue = 1;
-                          //     hideDropDownMotif = true;
-                          //   });
-                          // },
-                          value: selectedValue,
-                          onChanged: (value) async {
-                            setState(() {
-                              selectedValue = value!;
-                              hideDropDownMotif = false;
-                              if (value == 0) {
-                                model.getEvents(widget.id);
-                              } else {
-                                model.getEventsByDate(DateTime.now()
-                                    .subtract(Duration(days: value))
-                                    .toString());
-                              }
-                            });
-                          },
-                          itemBuilder: (item) =>
-                              ViewUtil.customOutlineContainer(
-                            // margin: EdgeInsets.only(bottom: 12.0),
-                            width: 100,
-                            height: 40,
-                            borderRadius: 20,
-                            backgroundColor: const Color(0xFF607D82),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const SizedBox(
-                                    width: 5,
+                            items: const [0, 1, 2, 3],
+                            //  fieldColor: Colors.transparent,
+                            // onTap: () {
+                            //   setState(() {
+                            //     selectedValue = 1;
+                            //     hideDropDownMotif = true;
+                            //   });
+                            // },
+                            value: selectedValue,
+                            onChanged: (value) async {
+                              setState(() {
+                                selectedValue = value!;
+                                hideDropDownMotif = false;
+                                if (value == 0) {
+                                  model.getEvents(widget.id);
+                                } else {
+                                  model.getEventsByDate(DateTime.now()
+                                      .subtract(Duration(days: value))
+                                      .toString());
+                                }
+                              });
+                            },
+                            itemBuilder: (item) => SizedBox(
+                              //   width: 100,
+                              child: ViewUtil.customOutlineContainer(
+                                width: 100,
+                                height: 40,
+                                borderRadius: 20,
+                                backgroundColor: const Color(0xFF607D82),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // const SizedBox(
+                                      //   width: 5,
+                                      // ),
+                                      Text(
+                                        dayLimits[item].toString(),
+                                        style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w900)
+                                            .makeWhite,
+                                      ),
+                                      // const Icon(
+                                      //   Icons.keyboard_arrow_down_outlined,
+                                      //   size: 30,
+                                      //   color: Colors.white,
+                                      // )
+                                    ],
                                   ),
-                                  Text(
-                                    dayLimits[item].toString(),
-                                    style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w900)
-                                        .makeWhite,
-                                  ),
-                                  const Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    size: 5,
-                                    color: Colors.white,
-                                  )
-                                ],
+                                ),
+                              ).spaceTo(
+                                bottom: 5,
                               ),
                             ),
-                          ).spaceTo(bottom: 5),
-                        ))
+                          )
+                        ],
+                      ),
 
-                        // ViewUtil.customOutlineContainer(
-                        //         height: 36.h,
-                        //         width: 90.w,
-                        //         child: const Text("data"))
-                        // SizedBox(
-                        //   width: 60,
-                        //   child: DropdownExpansionTile(
-                        //     labelText: "All Days",
-                        //     onDocSelected: (p0) {},
-                        //     decoration: InputDecoration(),
-                        //     value: IdentityDocument.driversLicence,
-                        //   )
-                        //   .spaceTo(left: 20),
-                        // )
-                      ],
-                    ),
-
-                    // DropdownExpansionTile(
-                    //     value: IdentityDocument.driversLicence,
-                    //     labelText: "labelText",
-                    //     decoration: InputDecoration(),
-                    //     onDocSelected: (onDocSelected) {})
-                  ],
+                      // DropdownExpansionTile(
+                      //     value: IdentityDocument.driversLicence,
+                      //     labelText: "labelText",
+                      //     decoration: InputDecoration(),
+                      //     onDocSelected: (onDocSelected) {})
+                    ],
+                  ),
                 ),
-              ),
-              // Row(
-              //   children: [
-              //     categoryContainer(
-              //         id: model.categories.first.id!,
-              //         category: model.categories.first)
-              //   ],
-              // )
-              SizedBox(
-                height: 52,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    allCategContainer().spaceTo(right: 4),
-                    ...List.generate(
-                        model.categories.length,
-                        (index) => categoryContainer(
-                                id: model.categories[index].id!,
-                                category: model.categories[index])
-                            .spaceTo(right: 4))
-                  ],
+                // Row(
+                //   children: [
+                //     categoryContainer(
+                //         id: model.categories.first.id!,
+                //         category: model.categories.first)
+                //   ],
+                // )
+                SizedBox(
+                  height: 52,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      allCategContainer().spaceTo(right: 4),
+                      ...List.generate(
+                          model.categories.length,
+                          (index) => categoryContainer(
+                                  id: model.categories[index].id!,
+                                  category: model.categories[index])
+                              .spaceTo(right: 4))
+                    ],
+                  ),
+                ).spaceTo(bottom: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Next events",
+                    style: const TextStyle().titleSmall,
+                  ).spaceTo(bottom: 20.h),
                 ),
-              ).spaceTo(bottom: 20),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Next events",
-                  style: const TextStyle().titleSmall,
-                ).spaceTo(bottom: 20.h),
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ...List.generate(
-                        model.events.length,
-                        (index) => buildEventContainer(
-                              model.events[index],
-                              selectedId,
-                            ).spaceTo(bottom: 8)),
-                  ],
-                ),
-              )),
-            ],
-          ).spaceSymmetrically(
-            horizontal: 16,
-          )),
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...List.generate(
+                          model.events.length,
+                          (index) => buildEventContainer(
+                                model.events[index],
+                                selectedId,
+                              ).spaceTo(bottom: 8)),
+                    ],
+                  ),
+                )),
+              ],
+            ).spaceSymmetrically(
+              horizontal: 16,
+            )),
+      ),
     );
   }
 
@@ -302,8 +297,12 @@ class _ExploreState extends State<Explore> {
       // Hide the container if its ID doesn't match the selected ID, unless "All" is selected
       return const SizedBox.shrink();
     }
-    return ViewUtil.eventContainer(eventInstance, context, () async {
-      model.saveAnEvent(eventInstance, widget.id);
+    return ViewUtil.eventContainer(widget.id, eventInstance, context, () async {
+      if (eventInstance.isSaved != null) {
+        model.removeSavedEvent(eventInstance, widget.id);
+      } else {
+        model.saveAnEvent(eventInstance, widget.id);
+      }
     });
   }
 }

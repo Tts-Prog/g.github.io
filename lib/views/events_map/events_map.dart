@@ -106,61 +106,95 @@ class _EventsMapState extends State<EventsMap> {
                 right: 20,
                 child: Column(
                   children: [
-                    ViewUtil.customOutlineContainer(
-                      backgroundColor: Colors.white,
-                      borderRadius: 12,
-                      child: Autocomplete<EventInstance>(
-                        optionsBuilder: (textValue) {
-                          return model.events.where((element) => element.title!
-                              .toLowerCase()
-                              .contains(textValue.text.toLowerCase()));
-                        },
-                        onSelected: (option) {
-                          setState(() {
-                            selectedId = "All";
-                            _focusMapOnLocation(
-                                option.latitude!, option.longitude!);
-                            print(option.longitude!);
-                            eventInstance = option;
-                            showEventContainer = true;
-                          });
-                        },
-                        fieldViewBuilder: (BuildContext context,
-                            TextEditingController textEditingController,
-                            FocusNode focusNode,
-                            VoidCallback onFieldSubmitted) {
-                          return TextField(
-                            controller: textEditingController,
-                            focusNode: focusNode,
-                            decoration: const InputDecoration(
-                                labelText: 'Find An Event',
-                                labelStyle: TextStyle(
-                                    color: AppColors.typographySubColor)),
-                          );
-                        },
-                        displayStringForOption: (obj) => obj.title!,
-                        optionsViewBuilder: (context, onSelected, options) {
-                          return ListView.builder(
-                              itemCount: options.length,
-                              itemBuilder: (context, ind) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    onSelected(options.toList()[ind]);
-                                  },
-                                  child: ViewUtil.customOutlineContainer(
-                                    //width: 200.w,
-                                    borderRadius: 12,
-                                    backgroundColor: Colors.white,
-                                    child: Text(
-                                      options.toList()[ind].title ?? "",
-                                      style: const TextStyle().bodyMedium,
-                                    ).spaceSymmetrically(
-                                        horizontal: 12, vertical: 12),
-                                  ).spaceTo(bottom: 6, right: 50),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: ViewUtil.customOutlineContainer(
+                            height: 50,
+                            backgroundColor: Colors.white,
+                            borderRadius: 12,
+                            child: Autocomplete<EventInstance>(
+                              optionsBuilder: (textValue) {
+                                return model.events.where((element) => element
+                                    .title!
+                                    .toLowerCase()
+                                    .contains(textValue.text.toLowerCase()));
+                              },
+                              onSelected: (option) {
+                                setState(() {
+                                  selectedId = "All";
+                                  _focusMapOnLocation(
+                                      option.latitude!, option.longitude!);
+                                  print(option.longitude!);
+                                  eventInstance = option;
+                                  showEventContainer = true;
+                                });
+                              },
+                              fieldViewBuilder: (BuildContext context,
+                                  TextEditingController textEditingController,
+                                  FocusNode focusNode,
+                                  VoidCallback onFieldSubmitted) {
+                                return TextField(
+                                  controller: textEditingController,
+                                  focusNode: focusNode,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Find An Event',
+                                      labelStyle: TextStyle(
+                                          color: AppColors.typographySubColor)),
                                 );
-                              });
-                        },
-                      ),
+                              },
+                              displayStringForOption: (obj) => obj.title!,
+                              optionsViewBuilder:
+                                  (context, onSelected, options) {
+                                return ListView.builder(
+                                    itemCount: options.length,
+                                    itemBuilder: (context, ind) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          onSelected(options.toList()[ind]);
+                                        },
+                                        child: ViewUtil.customOutlineContainer(
+                                          //width: 200.w,
+                                          borderRadius: 12,
+                                          backgroundColor: Colors.white,
+                                          child: Text(
+                                            options.toList()[ind].title ?? "",
+                                            style: const TextStyle().bodyMedium,
+                                          ).spaceSymmetrically(
+                                              horizontal: 12, vertical: 12),
+                                        ).spaceTo(bottom: 6, right: 50),
+                                      );
+                                    });
+                              },
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: eventInstance != null
+                              ? () {
+                                  setState(() {
+                                    selectedId = "All";
+                                    _focusMapOnLocation(
+                                        eventInstance!.latitude!,
+                                        eventInstance!.longitude!);
+                                    print(eventInstance!.longitude!);
+                                    // eventInstance = eventInstance;
+                                    showEventContainer = true;
+                                  });
+                                }
+                              : null,
+                          child: ViewUtil.customOutlineContainer(
+                              height: 50,
+                              width: 50,
+                              borderRadius: 12,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.my_location_rounded,
+                                color: Color(0xFF828282),
+                              )).spaceTo(left: 12),
+                        ),
+                      ],
                     ).spaceTo(bottom: 12),
                     SizedBox(
                       height: 52,
@@ -204,7 +238,9 @@ class _EventsMapState extends State<EventsMap> {
       child: Stack(
         children: [
           Image.asset(
-            AppAssets.mapMarker,
+            eventInstance == event
+                ? AppAssets.mapBlackMarker
+                : AppAssets.mapMarker,
             height: 100,
             width: 120,
             scale: 4,
@@ -303,7 +339,8 @@ class _EventsMapState extends State<EventsMap> {
     }
     return Stack(
       children: [
-        ViewUtil.searchEventContainer(eventInstance!, context, () async {
+        ViewUtil.searchEventContainer(eventInstance!, widget.id, context,
+            () async {
           // model.saveAnEvent(
           //   eventInstance.id!,
           // );

@@ -56,7 +56,7 @@ ThemeData lightTheme() {
             // fontFamily: AppFonts.alatsi
             ),
         headlineMedium: TextStyle(
-            fontSize: 35,
+            fontSize: 32,
             fontWeight: FontWeight.w900,
             color: AppColors.typographyTitle)),
     inputDecorationTheme: InputDecorationTheme(

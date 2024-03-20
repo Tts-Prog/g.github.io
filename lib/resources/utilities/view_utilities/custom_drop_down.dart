@@ -28,16 +28,14 @@ class CustomDropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<T>(
-      child: widget,
-      // value: value,
-      // isDense: false, isExpanded: true,
-      // onTap: () {},
+      padding: EdgeInsets.zero,
       onSelected: onChanged,
       surfaceTintColor: Colors.transparent,
       color: Colors.transparent,
       itemBuilder: (_) => List<PopupMenuEntry<T>>.generate(
         items.length,
         (index) => PopupMenuItem<T>(
+          padding: EdgeInsets.only(left: 12),
           value: items[index],
           child: itemBuilder(items[index]),
           //  padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -49,6 +47,7 @@ class CustomDropdown<T> extends StatelessWidget {
       //  dropdownColor: Colors.transparent,
       elevation: 0,
       position: PopupMenuPosition.under,
+      child: widget,
     );
   }
 }

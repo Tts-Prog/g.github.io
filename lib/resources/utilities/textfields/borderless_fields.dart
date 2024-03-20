@@ -101,9 +101,9 @@ class _CustomInputfieldsFieldState extends State<BorderlessSearchFields> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.transparent,
-        hintText: "Search",
+        hintText: widget.showSuffixBusy ? "|   Search" : " Search",
         //hintStyle: TextStyle(color: Colors.grey[400]),
-        prefixText: "|     ",
+        //prefixText: widget.showSuffixBusy ? null : "|   ",
         prefixStyle: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
