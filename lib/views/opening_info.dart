@@ -151,7 +151,8 @@ class _OpeningInfoState extends State<OpeningInfo> {
                                           const TextStyle().bodyLarge.makeWhite,
                                     )),
                               ],
-                            ).spaceTo(left: 30, right: 30, top: 35.h)
+                            ).spaceTo(
+                                left: 30, right: 30, top: 35.h, bottom: 20.h)
                           ],
                         ),
                       ),

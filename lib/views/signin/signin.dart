@@ -90,17 +90,17 @@ class _SignInState extends State<SignIn> {
                       model.logIn();
                     }).spaceTo(bottom: 20.h, top: 20.h),
 
-                const Text(
-                  "OR",
-                  style: TextStyle(color: Colors.grey),
-                ).spaceTo(bottom: 10.h),
-                ViewUtil.customButton(
-                        onPressed: () {},
-                        buttonColor: Colors.white,
-                        buttonLogo: AppAssets.googleLogo,
-                        textColor: AppColors.typographyTitle,
-                        buttonText: "Log in with Google")
-                    .spaceTo(bottom: 50.h),
+                // const Text(
+                //   "OR",
+                //   style: TextStyle(color: Colors.grey),
+                // ).spaceTo(bottom: 10.h),
+                //  ViewUtil.customButton(
+                //         onPressed: () {},
+                //         buttonColor: Colors.white,
+                //         buttonLogo: AppAssets.googleLogo,
+                //         textColor: AppColors.typographyTitle,
+                //         buttonText: "Log in with Google")
+                //     .spaceTo(bottom: 50.h),
                 ViewUtil.bonakoTrademark()
                 // RichText(
                 //   text: TextSpan(

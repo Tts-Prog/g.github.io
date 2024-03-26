@@ -145,7 +145,7 @@ class ExploreViewModel extends BaseViewModel {
 
         // userProfileInfo = await _authService.getUserProfileInfo(email);
         ViewUtil.showSnackBar(context, "Event Saved");
-        events.remove(eventInstance);
+        //events.remove(eventInstance);
         notifyListeners();
         setBusy(false);
 
@@ -186,7 +186,7 @@ mutation RemoveSavedEvent {
       ViewUtil.showSnackBar(context, "Event Not Found");
     } else if (response.response.data!.removeSavedEvent == true) {
       setBusy(false);
-      events.remove(eventInstance);
+      //events.remove(eventInstance);
       ViewUtil.showSnackBar(context, "Event removed");
     } else {
       ViewUtil.showSnackBar(context, response.response.errorMessage);
