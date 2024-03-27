@@ -112,17 +112,18 @@ class _SignInState extends State<SignIn> {
                 ).spaceTo(bottom: 10.h),
 
                 ViewUtil.onboardingButton(
-                    buttonText: "Create account",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUp(
-                            email: widget.email,
-                          ),
+                  buttonText: "Create account",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignUp(
+                          email: widget.email,
                         ),
-                      );
-                    }).spaceTo(bottom: 20.h, top: 20.h),
+                      ),
+                    );
+                  },
+                ).spaceTo(bottom: 20.h, top: 20.h),
                 // ViewUtil.customButton(
                 //         onPressed: () {
                 //           Navigator.push(

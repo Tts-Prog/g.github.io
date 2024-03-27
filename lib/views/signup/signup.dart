@@ -117,13 +117,22 @@ class _SignUpState extends State<SignUp> {
                             : null,
                       ).spaceTo(bottom: 20.h),
                       ElevatedButton(
-                              onPressed: !model.isButtonEnabled
-                                  ? null
-                                  : () => () async {
-                                        model.createUser();
-                                      },
-                              child: const Text("SIGN UP"))
-                          .spaceTo(bottom: 30.h),
+                        onPressed: () async {
+                          model.createUser();
+                        },
+                        child: const Text("SIGN UP"),
+                      ).spaceTo(bottom: 30.h),
+                      // ElevatedButton(
+                      //         onPressed: !model.isButtonEnabled ||
+                      //                 model.nameController.text.isEmpty ||
+                      //                 model.passwordController.text.isEmpty ||
+                      //                 model.confirmPwordController.text.isEmpty
+                      //             ? null
+                      //             : () => () async {
+                      //                   model.createUser();
+                      //                 },
+                      //         child: const Text("SIGN UP"))
+                      //     .spaceTo(bottom: 30.h),
                       // const Text(
                       //   "OR",
                       //   style: TextStyle(color: Colors.grey),
