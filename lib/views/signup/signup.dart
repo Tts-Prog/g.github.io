@@ -117,26 +117,23 @@ class _SignUpState extends State<SignUp> {
                             : null,
                       ).spaceTo(bottom: 20.h),
                       ElevatedButton(
-                              onPressed: !model.isButtonEnabled ||
-                                      model.nameController.text.isEmpty ||
-                                      model.passwordController.text.isEmpty ||
-                                      model.confirmPwordController.text.isEmpty
+                              onPressed: !model.isButtonEnabled
                                   ? null
                                   : () => () async {
                                         model.createUser();
                                       },
                               child: const Text("SIGN UP"))
                           .spaceTo(bottom: 30.h),
-                      const Text(
-                        "OR",
-                        style: TextStyle(color: Colors.grey),
-                      ).spaceTo(bottom: 10.h),
-                      customButton(
-                          onPressed: model.createUser,
-                          buttonColor: Colors.white,
-                          buttonLogo: AppAssets.googleLogo,
-                          textColor: AppColors.typographyTitle,
-                          buttonText: "Log in with Google"),
+                      // const Text(
+                      //   "OR",
+                      //   style: TextStyle(color: Colors.grey),
+                      // ).spaceTo(bottom: 10.h),
+                      // customButton(
+                      //     onPressed: model.createUser,
+                      //     buttonColor: Colors.white,
+                      //     buttonLogo: AppAssets.googleLogo,
+                      //     textColor: AppColors.typographyTitle,
+                      //     buttonText: "Log in with Google"),
                     ],
                   ).spaceSymmetrically(horizontal: 16, vertical: 24),
                   ViewUtil.bonakoTrademark().spaceTo(top: 80.h)
