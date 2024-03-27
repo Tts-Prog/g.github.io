@@ -37,28 +37,31 @@ class EmailCheckViewModel extends BaseViewModel {
     email = emailController.text.trim();
 
     String query = """
-mutation {
-  forgotPassword(email: "$email")
-}
+    mutation {
+      getUser(email: $email) {
+        id
+      }
+    }""";
 
-
-""";
     var response = await _apiService.request(
         route: ApiRoute(ApiType.checkEmail),
         data: {"query": query},
-        create: () => APIResponse<ValidateUserResponse>(
-            create: () => ValidateUserResponse()));
+        create: () =>
+            APIResponse<UserProfileInfo>(create: () => UserProfileInfo()));
 
-    if (response.response.data!.forgotPassword == false) {
+    print("response ${response.response.data!.getUser}");
+
+    if (response.response.data!.getUser == null) {
       setBusy(false);
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SignUp(
-                  email: email,
-                )),
+          builder: (context) => SignUp(
+            email: email,
+          ),
+        ),
       );
-    } else if (response.response.data!.forgotPassword == true) {
+    } else if (response.response.data!.getUser != null) {
       setBusy(true);
       getUserInfo();
       setBusy(false);

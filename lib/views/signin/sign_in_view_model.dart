@@ -15,7 +15,7 @@ class SignInViewModel extends BaseViewModel {
   String title = "Template Title";
   late BuildContext context;
   final _authService = locator<AuthenticationService>();
-
+  FocusNode emailNode = FocusNode();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final APIClient _apiService = locator<APIClient>();
@@ -39,11 +39,10 @@ class SignInViewModel extends BaseViewModel {
 
     String query = """
       mutation {
-  login(email: "$email", password: "$password") {
-   id
-  }
-}
-
+        login(email: "$email", password: "$password") {
+          id
+        }
+      }
     """;
 
     var response = await _apiService.request(

@@ -85,7 +85,7 @@ class _EmailCheckState extends State<EmailCheck> {
                                 height: 27.h,
                                 width: 105.w)
                             .spaceSymmetrically(vertical: 40.h),
-                        const Text(
+                        /* const Text(
                           "OR",
                           style: TextStyle(color: Colors.grey),
                         ).spaceTo(bottom: 10.h),
@@ -95,7 +95,7 @@ class _EmailCheckState extends State<EmailCheck> {
                                 buttonLogo: AppAssets.googleLogo,
                                 textColor: AppColors.typographyTitle,
                                 buttonText: "Log in with Google")
-                            .spaceTo(bottom: 60.h),
+                            .spaceTo(bottom: 60.h), */
                       ],
                     ).spaceSymmetrically(horizontal: 16, vertical: 24),
                     ViewUtil.bonakoTrademark(),
