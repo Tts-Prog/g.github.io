@@ -7,8 +7,11 @@ import 'package:ame/resources/utilities/textfields/password_form_field.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
 import 'package:ame/views/reset_password/email.dart';
+import 'package:ame/views/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../resources/utilities/validation_util.dart';
 
 import '../../resources/utilities/view_utilities/default_scaffold.dart';
 import 'sign_in_view_model.dart';
@@ -51,16 +54,28 @@ class _SignInState extends State<SignIn> {
                     style: const TextStyle().titleMedium,
                   ).spaceTo(bottom: 20.h),
                 ),
+                // CustomInputFields(
+                //   node: model.emailNode,
+                //   readOnly: true,
+                //   iconPresent: true,
+                //   controller: model.emailController,
+                //   keyboardType: TextInputType.emailAddress,
+                //   prefix: ViewUtil.imageAsset4Scale(
+                //       asset: AppAssets.emailTextFdIcon),
+                //   labelText: "abc@email.com",
+                // ).spaceTo(bottom: 20.h),
                 CustomInputFields(
                   node: model.emailNode,
-                  readOnly: true,
                   iconPresent: true,
                   controller: model.emailController,
                   keyboardType: TextInputType.emailAddress,
                   prefix: ViewUtil.imageAsset4Scale(
                       asset: AppAssets.emailTextFdIcon),
-                  labelText: "abc@email.com",
-                ).spaceTo(bottom: 20.h),
+                  hintText: "abc@email.com",
+                  validate: (value) => model.emailNode.hasFocus
+                      ? ValidationUtil.validateEmail(value)
+                      : null,
+                ).spaceTo(bottom: 30.h),
                 PasswordTextField(
                   keyboardType: TextInputType.text,
                   hintText: "Your Password",
@@ -91,17 +106,39 @@ class _SignInState extends State<SignIn> {
                       model.logIn();
                     }).spaceTo(bottom: 20.h, top: 20.h),
 
-                /* const Text(
+                const Text(
                   "OR",
                   style: TextStyle(color: Colors.grey),
                 ).spaceTo(bottom: 10.h),
-                 ViewUtil.customButton(
-                        onPressed: () {},
-                        buttonColor: Colors.white,
-                        buttonLogo: AppAssets.googleLogo,
-                        textColor: AppColors.typographyTitle,
-                        buttonText: "Log in with Google")
-                    .spaceTo(bottom: 50.h), */
+
+                ViewUtil.onboardingButton(
+                    buttonText: "Create account",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUp(
+                            email: widget.email,
+                          ),
+                        ),
+                      );
+                    }).spaceTo(bottom: 20.h, top: 20.h),
+                // ViewUtil.customButton(
+                //         onPressed: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => SignUp(
+                //                 email: widget.email,
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //         buttonColor: Colors.white,
+                //         buttonLogo: AppAssets.googleLogo,
+                //         textColor: AppColors.typographyTitle,
+                //         buttonText: "Create new account")
+                //     .spaceTo(bottom: 50.h),
                 ViewUtil.bonakoTrademark()
                 // RichText(
                 //   text: TextSpan(

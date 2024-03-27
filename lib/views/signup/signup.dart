@@ -73,16 +73,28 @@ class _SignUpState extends State<SignUp> {
                             ? ValidationUtil.validateFullName(value)
                             : null,
                       ).spaceTo(bottom: 20.h),
+                      // CustomInputFields(
+                      //   node: model.emailNode,
+                      //   readOnly: true,
+                      //   iconPresent: true,
+                      //   controller: model.emailController,
+                      //   keyboardType: TextInputType.emailAddress,
+                      //   prefix: ViewUtil.imageAsset4Scale(
+                      //       asset: AppAssets.emailTextFdIcon),
+                      //   labelText: "abc@email.com",
+                      // ).spaceTo(bottom: 20.h),
                       CustomInputFields(
                         node: model.emailNode,
-                        readOnly: true,
                         iconPresent: true,
                         controller: model.emailController,
                         keyboardType: TextInputType.emailAddress,
                         prefix: ViewUtil.imageAsset4Scale(
                             asset: AppAssets.emailTextFdIcon),
-                        labelText: "abc@email.com",
-                      ).spaceTo(bottom: 20.h),
+                        hintText: "abc@email.com",
+                        validate: (value) => model.emailNode.hasFocus
+                            ? ValidationUtil.validateEmail(value)
+                            : null,
+                      ).spaceTo(bottom: 30.h),
                       PasswordTextField(
                         node: model.passwordNode,
                         keyboardType: TextInputType.text,

@@ -36,46 +36,56 @@ class EmailCheckViewModel extends BaseViewModel {
     setBusy(true);
     email = emailController.text.trim();
 
-    String query = """
-    mutation {
-      getUser(email: $email) {
-        id
-      }
-    }""";
-
-    var response = await _apiService.request(
-        route: ApiRoute(ApiType.checkEmail),
-        data: {"query": query},
-        create: () =>
-            APIResponse<UserProfileInfo>(create: () => UserProfileInfo()));
-
-    print("response ${response.response.data!.getUser}");
-
-    if (response.response.data!.getUser == null) {
-      setBusy(false);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SignUp(
-            email: email,
-          ),
+    setBusy(true);
+    getUserInfo();
+    setBusy(false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignIn(
+          email: email,
         ),
-      );
-    } else if (response.response.data!.getUser != null) {
-      setBusy(true);
-      getUserInfo();
-      setBusy(false);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SignIn(
-                  email: email,
-                )),
-      );
-    } else {
-      ViewUtil.showSnackBar(context, response.response.errorMessage);
-      setBusy(false);
-    }
+      ),
+    );
+
+    // String query = """
+    // mutation {
+    //   getUser(email: $email) {
+    //     id
+    //   }
+    // }""";
+
+    // var response = await _apiService.request(
+    //     route: ApiRoute(ApiType.checkEmail),
+    //     data: {"query": query},
+    //     create: () =>
+    //         APIResponse<UserProfileInfo>(create: () => UserProfileInfo()));
+
+    // if (response.response.data!.getUser == null) {
+    //   setBusy(false);
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => SignUp(
+    //         email: email,
+    //       ),
+    //     ),
+    //   );
+    // } else if (response.response.data!.getUser != null) {
+    //   setBusy(true);
+    //   getUserInfo();
+    //   setBusy(false);
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => SignIn(
+    //               email: email,
+    //             )),
+    //   );
+    // } else {
+    //   ViewUtil.showSnackBar(context, response.response.errorMessage);
+    //   setBusy(false);
+    // }
   }
 
   getUserInfo() async {
