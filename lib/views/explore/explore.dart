@@ -247,14 +247,29 @@ class _ExploreState extends State<Explore> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ViewUtil.eventTags(
-                category: category.name! ?? "All",
-                tagColor:
-                    Color(int.parse(category!.color!.replaceAll("#", "0x66")))),
+              category: category.name! ?? "All",
+              tagColor: Color(
+                int.parse(
+                  category.color!.startsWith("#")
+                      ? category.color!.replaceAll("#", "0x66")
+                      : category.color!.startsWith(" ")
+                          ? category.color!.replaceAll(" ", "0x66")
+                          : "0x66${category.color!}",
+                ),
+              ),
+            ),
             ViewUtil.customOutlineContainer(
                     borderRadius: 8,
                     backgroundColor: selectedId == id
                         ? Color(
-                            int.parse(category.color!.replaceAll("#", "0x66")))
+                            int.parse(
+                              category.color!.startsWith("#")
+                                  ? category.color!.replaceAll("#", "0x66")
+                                  : category.color!.startsWith(" ")
+                                      ? category.color!.replaceAll(" ", "0x66")
+                                      : "0x66${category.color!}",
+                            ),
+                          )
                         : Colors.transparent,
                     width: 24,
                     height: 5,

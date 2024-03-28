@@ -37,7 +37,7 @@ class EmailCheckViewModel extends BaseViewModel {
     email = emailController.text.trim();
 
     setBusy(true);
-    getUserInfo();
+    //getUserInfo();
     setBusy(false);
     Navigator.push(
       context,

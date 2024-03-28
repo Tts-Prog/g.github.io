@@ -1,5 +1,6 @@
 import 'package:ame/resources/models/all_events_response.dart';
 import 'package:ame/resources/models/get_user_info_response.dart';
+import 'package:ame/resources/models/user_removal_response.dart';
 import 'package:ame/resources/utilities/view_utilities/view_util.dart';
 import 'package:flutter/material.dart';
 
@@ -182,6 +183,39 @@ mutation RemoveSavedEvent {
     } else {
       setBusy(false);
       ViewUtil.showSnackBar(context, "Error");
+    }
+  }
+
+  removeAccount(String id) async {
+    String removeUserId = id!;
+    String query = """
+mutation RemoveSavedEvent {
+  removeUser(id: $removeUserId)
+}
+""";
+
+    var response = await _apiService.request(
+        header: {
+          "user_id": "$id",
+          // 'accept': 'application/json',
+          'content-type': 'application/json'
+        },
+        route: ApiRoute(
+          ApiType.removeSavedEvent,
+        ),
+        data: {"query": query},
+        create: () => APIResponse<AccountRemovalResponse>(
+            create: () => AccountRemovalResponse()));
+
+    if (response.response.data!.removeAccount == false) {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Account not deleted");
+    } else if (response.response.data!.removeAccount == true) {
+      setBusy(false);
+      ViewUtil.showSnackBar(context, "Account removed");
+    } else {
+      ViewUtil.showSnackBar(context, response.response.errorMessage);
+      setBusy(false);
     }
   }
 

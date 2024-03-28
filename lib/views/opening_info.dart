@@ -171,15 +171,15 @@ class _OpeningInfoState extends State<OpeningInfo> {
     infoCarousel(
         header: " Explore Upcoming and \nNearby Events ",
         description:
-            " In publishing and graphic design, Lorem is a placeholder text commonly "),
+            " From concerts to workshops, festivals to parties, your next great experience is just a tap away!  "),
     infoCarousel(
-        header: " Web Have Modern Events Calendar Feature",
+        header: "Events Calendar Feature",
         description:
-            " In publishing and graphic design, Lorem is a placeholder text commonly "),
+            " Experience the future of event planning with our Modern Events Calendar feature. "),
     infoCarousel(
-        header: " Web Have Modern Events Calendar Feature",
+        header: " Save and Organize Events",
         description:
-            " In publishing and graphic design, Lorem is a placeholder text commonly "),
+            " Effortlessly Explore Tomorrow's Thrills: Navigate through Future Exciting Events "),
   ];
 }
 

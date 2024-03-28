@@ -263,9 +263,15 @@ class _EventsMapState extends State<EventsMap> {
                   height: 30,
                   width: 20,
                   alignment: Alignment.center,
-                  backgroundColor: Color(int.parse(
-                          event.category!.color!.replaceAll("#", "0x66")))
-                      .withOpacity(1),
+                  backgroundColor: Color(
+                    int.parse(
+                      event.category!.color!.startsWith("#")
+                          ? event.category!.color!.replaceAll("#", "0x66")
+                          : event.category!.color!.startsWith(" ")
+                              ? event.category!.color!.replaceAll(" ", "0x66")
+                              : "0x66${event.category!.color!}",
+                    ),
+                  ).withOpacity(1),
                   child: Text(
                     model.events.indexOf(event).toString(),
                     style: const TextStyle(color: Colors.white),
@@ -313,13 +319,28 @@ class _EventsMapState extends State<EventsMap> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ViewUtil.eventTags(
-                category: category.name! ?? "All",
-                tagColor:
-                    Color(int.parse(category!.color!.replaceAll("#", "0x66")))),
+              category: category.name! ?? "All",
+              tagColor: Color(
+                int.parse(
+                  category.color!.startsWith("#")
+                      ? category.color!.replaceAll("#", "0x66")
+                      : category.color!.startsWith(" ")
+                          ? category.color!.replaceAll(" ", "0x66")
+                          : "0x66${category.color!}",
+                ),
+              ),
+            ),
             ViewUtil.customOutlineContainer(
                     backgroundColor: selectedId == id
                         ? Color(
-                            int.parse(category.color!.replaceAll("#", "0x66")))
+                            int.parse(
+                              category.color!.startsWith("#")
+                                  ? category.color!.replaceAll("#", "0x66")
+                                  : category.color!.startsWith(" ")
+                                      ? category.color!.replaceAll(" ", "0x66")
+                                      : "0x66${category.color!}",
+                            ),
+                          )
                         : Colors.transparent,
                     width: 24,
                     height: 5,

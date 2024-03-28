@@ -46,10 +46,16 @@ class SignInViewModel extends BaseViewModel {
     """;
 
     var response = await _apiService.request(
-        route: ApiRoute(ApiType.signIn),
-        data: {"query": query},
-        create: () =>
-            APIResponse<LoginResponse>(create: () => LoginResponse()));
+      route: ApiRoute(ApiType.signIn),
+      data: {"query": query},
+      create: () => APIResponse<LoginResponse>(
+        create: () {
+          return LoginResponse();
+        },
+      ),
+    );
+
+    print("response is $response");
 
     if (response.response.errorMessage == null) {
       setBusy(false);
@@ -57,11 +63,10 @@ class SignInViewModel extends BaseViewModel {
         context,
         MaterialPageRoute(
             fullscreenDialog: true,
-            builder: (context) => Home(
-                  email: email,
-                  id: response.response.data!.login!.id!,
-                )),
+            builder: (context) =>
+                Home(email: email, id: response.response.data!.login!.id!)),
       ).then((value) => false);
+      //id: response.response.data!.login!.id!,
     } else if (response.response.errorMessage != null) {
       setBusy(false);
       ViewUtil.showSnackBar(context, response.response.errorMessage);

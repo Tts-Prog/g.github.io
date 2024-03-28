@@ -162,6 +162,7 @@ class _ArtistPageState extends State<ArtistPage> {
           width: 295.w,
           // gradient: const LinearGradient(
           //     colors: [Color(0x33000000), Color(0xCC29E6DC)])
+          // widget.eventInstance.category!.color!.replaceAll("#", "0x66"),
           backgroundColor: const Color(0xCC828282),
           child: SizedBox(
             child: Row(
@@ -169,10 +170,18 @@ class _ArtistPageState extends State<ArtistPage> {
                 SizedBox(
                   width: 80,
                   child: ViewUtil.customOutlineContainer(
-                      backgroundColor: Color(int.parse(widget
-                              .eventInstance.category!.color!
-                              .replaceAll("#", "0x66")))
-                          .withOpacity(0.8),
+                      backgroundColor: Color(
+                        int.parse(
+                          widget.eventInstance.category!.color!.startsWith("#")
+                              ? widget.eventInstance.category!.color!
+                                  .replaceAll("#", "0x66")
+                              : widget.eventInstance.category!.color!
+                                      .startsWith(" ")
+                                  ? widget.eventInstance.category!.color!
+                                      .replaceAll(" ", "0x66")
+                                  : "0x66${widget.eventInstance.category!.color!}",
+                        ),
+                      ).withOpacity(0.8),
                       height: 39.h,
                       width: 96.w,
                       borderRadius: 10,

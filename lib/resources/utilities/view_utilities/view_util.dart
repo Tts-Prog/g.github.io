@@ -365,12 +365,27 @@ class ViewUtil {
                   alignment: Alignment.topLeft,
                   child: FittedBox(
                     child: ViewUtil.eventTags(
-                        category: eventInstance.category?.name ?? "",
-                        tagColor: Color(int.parse(eventInstance.category!.color!
-                            .replaceAll("#", "0x66")))),
+                      category: eventInstance.category?.name ?? "",
+                      tagColor: Color(
+                        int.parse(
+                          eventInstance.category!.color!.startsWith("#")
+                              ? eventInstance.category!.color!
+                                  .replaceAll("#", "0x66")
+                              : eventInstance.category!.color!.startsWith(" ")
+                                  ? eventInstance.category!.color!
+                                      .replaceAll(" ", "0x66")
+                                  : "0x66${eventInstance.category!.color!}",
+                        ),
+                      ),
+                    ),
                   ).spaceTo(left: 8, top: 10),
                 ),
               ).spaceTo(bottom: 8),
+              // int.parse(
+              //             eventInstance.category!.color!
+              //                 .replaceAll("#", "0x66"),
+              //           ),
+
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

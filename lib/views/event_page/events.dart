@@ -310,9 +310,18 @@ class _EventsPageState extends State<EventsPage> {
 
           // gradient: const LinearGradient(
           //     colors: [Color(0x33000000), Color(0xCC29E6DC)])
-          backgroundColor: Color(int.parse(widget.eventInstance.category!.color!
-                  .replaceAll("#", "0x66")))
-              .withOpacity(0.8),
+          // widget.eventInstance.category!.color!.replaceAll("#", "0x66"),
+          backgroundColor: Color(
+            int.parse(
+              widget.eventInstance.category!.color!.startsWith("#")
+                  ? widget.eventInstance.category!.color!
+                      .replaceAll("#", "0x66")
+                  : widget.eventInstance.category!.color!.startsWith(" ")
+                      ? widget.eventInstance.category!.color!
+                          .replaceAll(" ", "0x66")
+                      : "0x66${widget.eventInstance.category!.color!}",
+            ),
+          ).withOpacity(0.8),
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:ame/resources/size_utilities/size_fitter.dart';
 import 'package:ame/resources/theme_utilities/theme_extensions.dart';
 import 'package:ame/resources/utilities/app_assets.dart';
 import 'package:ame/resources/utilities/widget_extensions.dart';
+import 'package:ame/views/opening_info.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -46,60 +47,93 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          width: 69,
-                          height: 69,
+                          width: 79,
+                          height: 79,
                           decoration: const BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(AppAssets.artistHold),
                                   fit: BoxFit.cover),
-                              color: Colors.white,
+                              color: Colors.transparent,
                               shape: BoxShape.circle),
                           child: const SizedBox(),
                         ).spaceTo(right: 20),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              model.userDetails?.getUser?.name ?? "",
-                              style: const TextStyle().titleMedium.makeWhite,
-                            ),
-                            // Text(
-                            //   "Event Category",
-                            //   style: const TextStyle(
-                            //           fontWeight: FontWeight.w500, fontSize: 12)
-                            //       .makeWhite,
-                            // )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SimpleDialog(
+                                  title: Text("Options"),
+                                  children: <Widget>[
+                                    SimpleDialogOption(
+                                      onPressed: () {
+                                        // Close the options dialog
+                                        Navigator.pop(context);
+                                        // Now open the confirmation dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Delete Account"),
+                                              content: Text(
+                                                  "Are you sure you want to delete your account?"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context); // Close the AlertDialog
+                                                  },
+                                                  child: Text("No"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    model.removeAccount(model
+                                                        .userDetails!
+                                                        .getUser!
+                                                        .id!);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            const OpeningInfo(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text("Yes"),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: const Text('Delete Account'),
+                                    ),
+                                    // Add more options here if needed
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                model.userDetails?.getUser?.name ?? "",
+                                style: const TextStyle().titleMedium.makeWhite,
+                              ),
+                              Text(
+                                "tap for more options",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10,
+                                ).makeWhite,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                    ).spaceTo(top: 20.addSafeAreaHeight),
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: BorderlessSearchFields(
-                    //         onTap: () {
-                    //           // Navigator.push(
-                    //           //   context,
-                    //           //   MaterialPageRoute(
-                    //           //       builder: context) => const SearchPage()),
-                    //           // );
-                    //         },
-                    //         iconPresent: true,
-                    //         hintColor: Colors.white,
-                    //         keyboardType: TextInputType.emailAddress,
-                    //         prefix: ViewUtil.imageAsset4Scale(
-                    //             asset: AppAssets.searchIcon,
-                    //             color: Colors.white),
-                    //       ),
-                    //     ),
-                    //     ViewUtil.customOutlineContainer(
-                    //             height: 36.h,
-                    //             width: 90.w,
-                    //             child: const Text("data"))
-                    //         .spaceTo(left: 20)
-                    //   ],
-                    // )
+                    ).spaceTo(top: 50.addSafeAreaHeight),
                   ],
                 ),
               ),
@@ -174,13 +208,28 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ViewUtil.eventTags(
-                category: category.name! ?? "All",
-                tagColor:
-                    Color(int.parse(category!.color!.replaceAll("#", "0x66")))),
+              category: category.name! ?? "All",
+              tagColor: Color(
+                int.parse(
+                  category.color!.startsWith("#")
+                      ? category.color!.replaceAll("#", "0x66")
+                      : category.color!.startsWith(" ")
+                          ? category.color!.replaceAll(" ", "0x66")
+                          : "0x66${category.color!}",
+                ),
+              ),
+            ),
             ViewUtil.customOutlineContainer(
                     backgroundColor: selectedId == id
                         ? Color(
-                            int.parse(category.color!.replaceAll("#", "0x66")))
+                            int.parse(
+                              category.color!.startsWith("#")
+                                  ? category.color!.replaceAll("#", "0x66")
+                                  : category.color!.startsWith(" ")
+                                      ? category.color!.replaceAll(" ", "0x66")
+                                      : "0x66${category.color!}",
+                            ),
+                          )
                         : Colors.transparent,
                     width: 24,
                     borderRadius: 8,
