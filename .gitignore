@@ -7,7 +7,10 @@
 /.dart_tool/
 /.dart_tool/package_config.json
 .pub/
+/build
 /build/
+build/
+build
 .dart_tool/
 .packages
 .pubspec.lock
