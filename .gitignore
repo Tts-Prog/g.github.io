@@ -12,6 +12,8 @@
 build/
 build
 .git
+/.git
+/.git/
 .dart_tool/
 .packages
 .pubspec.lock
